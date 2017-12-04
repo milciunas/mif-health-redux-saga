@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "sdkVersion": "23.0.0",
+    "name": "mif-health-redux-saga",
+    "description": "An empty new project",
+    "slug": "mif-health-redux-saga",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#fff",
+    "icon": "",
+    "loading": {
+      "icon": "",
+      "hideExponentText": true
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
