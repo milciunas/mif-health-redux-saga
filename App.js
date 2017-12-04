@@ -3,6 +3,7 @@ import { StyleSheet, View, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import configureStore from './src/state/configureStore';
 import RootNavigation from './src/navigation/RootNavigation';
+import './src/state/logger/ReactotronConfig';
 
 const store = configureStore();
 

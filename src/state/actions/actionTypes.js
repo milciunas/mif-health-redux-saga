@@ -6,4 +6,4 @@ const createAsyncActionType = type => {
   };
 };
 
-export const FETCH_TEST = createAsyncActionType('fetch_test');
+export const FETCH_TEST = createAsyncActionType('FETCH_TEST');
