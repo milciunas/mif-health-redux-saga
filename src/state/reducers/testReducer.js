@@ -19,6 +19,6 @@ export default function test(state = INITIAL_STATE, action) {
         ...state
       };
     default:
-    return state;
+      return state;
   }  
 }

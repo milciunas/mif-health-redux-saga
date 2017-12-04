@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTest } from '../state/actions/testActions';
 
@@ -11,6 +12,10 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class LoginScreen extends Component {
+  static propTypes = {
+    fetchTest: PropTypes.func.isRequired
+  }
+
   componentDidMount() {
     this.props.fetchTest();
   }

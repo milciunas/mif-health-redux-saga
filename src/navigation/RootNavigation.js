@@ -4,8 +4,8 @@ import LoginScreen from '../screens/Login';
 
 const tabNavigatorConfig = {
   tabBarOptions: {
-    showLabel: false,
-  },
+    showLabel: false
+  }
 };
 
 const AppNavigation = StackNavigator(

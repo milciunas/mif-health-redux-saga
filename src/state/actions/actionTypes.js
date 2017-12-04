@@ -2,7 +2,7 @@ const createAsyncActionType = type => {
   return {
     REQUESTED: `${type}_REQUESTED`,
     SUCCESS: `${type}_SUCCESS`,
-    ERROR: `${type}_ERROR`,
+    ERROR: `${type}_ERROR`
   };
 };
 

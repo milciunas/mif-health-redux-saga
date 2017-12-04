@@ -1,0 +1,60 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react", "react-native", "import"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "no-debugger": 1,
+    "array-bracket-spacing": [ 2, "always" ],
+    "comma-dangle": [ 2, "never" ],
+    "eol-last": 2,
+    "indent": [ 2, 2, { "SwitchCase": 1 } ],
+    "jsx-quotes": [ 2, "prefer-single" ],
+    "no-multiple-empty-lines": 2,
+    "no-unused-vars": [1, {"varsIgnorePattern": "React"}],
+    "no-var": 2,
+    "eqeqeq": 2,
+    "object-curly-spacing": [ 2, "always" ],
+    "quotes": [ 2, "single", "avoid-escape" ],
+    "semi": [ 2, "always" ],
+    "strict": 0,
+    "space-before-blocks": [ 2, "always" ],
+    "space-before-function-paren": [ 2, { "anonymous": "never", "named": "never" } ],
+    "max-len": [1, 100, 2],
+    "no-console": 1,
+    "prefer-const": 2,
+    "react-native/no-unused-styles": 2,
+    "react-native/no-inline-styles": 2,
+    "react/no-unused-prop-types": 2,
+    "react/prop-types": 2,
+    "import/named": 2,
+    "import/default": 2,
+    "import/namespace": 2,
+    "import/no-absolute-path": 2,
+    "import/export": 2,
+    "import/no-duplicates": 2
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".android.js",
+          ".ios.js"
+        ]
+      }
+    },
+    "import/ignore": [
+      "node_modules"
+    ]
+  }
+}
