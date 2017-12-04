@@ -1,23 +1,26 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { Provider } from 'react-redux';
+import configureStore from './src/state/configureStore';
+import RootNavigation from './src/navigation/RootNavigation';
 
-export default class App extends React.Component {
+const store = configureStore();
+
+export default class App extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <StatusBar hidden={true} />
+          <RootNavigation />
+        </View>
+      </Provider>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    flex: 1
+  }
 });
