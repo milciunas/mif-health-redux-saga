@@ -41,7 +41,8 @@
     "import/namespace": 2,
     "import/no-absolute-path": 2,
     "import/export": 2,
-    "import/no-duplicates": 2
+    "import/no-duplicates": 2,
+    "react/display-name": [2]
   },
   "settings": {
     "import/resolver": {
@@ -55,6 +56,9 @@
     },
     "import/ignore": [
       "node_modules"
-    ]
+    ],
+    "react": {
+      "createClass": "createClass"
+    }
   }
 }
