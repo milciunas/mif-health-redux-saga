@@ -14,8 +14,8 @@ class WelcomeScreen extends Component {
     this.props.fetchTest();
   }
 
-  navigateToLogin = () => {
-    this.props.navigation.navigate('Login');
+  navigateToRegister = () => {
+    this.props.navigation.navigate('Register');
   }
 
   render() {
@@ -24,7 +24,7 @@ class WelcomeScreen extends Component {
         <View style={styles.container}>
           <Button
             title={'Register'}
-            onPress={this.navigateToLogin}
+            onPress={this.navigateToRegister}
           />
         </View>
       </View>
@@ -50,11 +50,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50,
     padding: 20
-  },
-  image: {
-    flex: 1,
-    position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0)',
-    resizeMode: 'contain'
   }
 });
