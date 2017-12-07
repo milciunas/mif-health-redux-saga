@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTest } from '../state/actions/testActions';
 
-class LoginScreen extends Component {
+class WelcomeScreen extends Component {
   static propTypes = {
     fetchTest: PropTypes.func.isRequired,
     exercises: PropTypes.array
@@ -43,7 +43,7 @@ const mapDispatchToProps = dispatch => ({
   fetchTest: () => dispatch(fetchTest())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
 
 const styles = StyleSheet.create({
   screen: {

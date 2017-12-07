@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import LoginScreen from '../screens/Login';
+import WelcomeScreen from '../screens/Welcome';
 
 const tabNavigatorConfig = {
   tabBarOptions: {
@@ -10,8 +10,8 @@ const tabNavigatorConfig = {
 
 const AppNavigation = StackNavigator(
   {
-    Login: {
-      screen: LoginScreen
+    Welcome: {
+      screen: WelcomeScreen
     }
   },
   {
