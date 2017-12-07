@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTest } from '../state/actions/testActions';
+import t from 'tcomb-form-native'; // 0.6.9
+
+const Form = t.form.Form;
+
+const User = t.struct({
+  email: t.String,
+  username: t.String,
+  password: t.String,
+  terms: t.Boolean
+});
 
 class WelcomeScreen extends Component {
   static propTypes = {
@@ -27,8 +37,8 @@ class WelcomeScreen extends Component {
     return (
       <View style={styles.screen}>
         <View style={styles.container}>
-          <Text>Testing login screen</Text>
-          {Exercises}
+          <Form type={User} />
+          <Button title={'Register'} style={{ borderWidth: 1 }} onPress={() => {}}/>
         </View>
       </View>
     );
@@ -50,8 +60,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    marginTop: 50,
+    padding: 20
   }
 });
