@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
 import * as firebase from 'firebase';
-import * as authActions from '../state/actions/authActions';
+import { signUpEmail } from '../state/actions/authActions';
 
 import Header from '../components/Header';
 
@@ -31,6 +32,10 @@ const options = {
 };
 
 class RegisterScreen extends Component {
+  static propTypes = {
+    signUpEmail: PropTypes.func.isRequired
+  } 
+  
   constructor(props) {
     super(props);
 
@@ -46,7 +51,6 @@ class RegisterScreen extends Component {
   signUp = () => {
     const { email, password } = this.state.form;
     if (email && password && email.length > 0 && password.length > 0) {
-      console.log('email comp', email, password);
       this.props.signUpEmail(email, password);
     }
   }
@@ -80,7 +84,7 @@ class RegisterScreen extends Component {
 // });
 
 const actionsToProps = {
-  ...authActions
+  signUpEmail
 };
 
 export default connect(null, actionsToProps)(RegisterScreen);
