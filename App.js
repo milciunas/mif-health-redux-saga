@@ -8,7 +8,6 @@ const store = configureStore();
 
 export default class App extends Component {
   render() {
-    console.ignoredYellowBox = [ 'Setting a timer' ];
     return (
       <Provider store={store}>
         <View style={styles.container}>

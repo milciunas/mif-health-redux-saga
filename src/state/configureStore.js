@@ -16,3 +16,7 @@ export default () => {
 
   return store;
 };
+
+console.ignoredYellowBox = [
+  'Setting a timer'
+];
