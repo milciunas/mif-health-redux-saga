@@ -62,7 +62,7 @@ class RegisterScreen extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Header screenProps={this.props}/>
+        <Header />
         <View style={styles.container}>
           <Form 
             type={User} 
@@ -79,16 +79,11 @@ class RegisterScreen extends Component {
   }
 }
 
-// const mapDispatchToProps = dispatch => ({
-//   signUpEmail: () => dispatch(signUpEmail())
-// });
-
 const actionsToProps = {
   signUpEmail
 };
 
 export default connect(null, actionsToProps)(RegisterScreen);
-
 
 const styles = StyleSheet.create({
   screen: {

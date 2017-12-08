@@ -1,5 +1,5 @@
 import { Record, List } from 'immutable';
-import { FETCH_TEST } from '../actions/actionTypes';
+import { FETCH_TEST, LOGIN_EMAIL, SIGN_UP_EMAIL } from '../actions/actionTypes';
 
 const initialState = Record({
   exercises: List()
@@ -38,8 +38,6 @@ function setExercises(state, exercises) {
   }
 
   stateExercises = stateExercises.sortBy(a => a.id);
-
-  console.log('stateexercises', stateExercises);
 
   return state.set('exercises', stateExercises);
 }

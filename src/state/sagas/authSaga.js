@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { SIGN_UP_EMAIL, LOGIN_EMAIL } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
-import { NavigationActions } from 'react-navigation';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 export function* watchSignUpEmailSaga() {
   yield takeLatest(SIGN_UP_EMAIL.REQUESTED, signUpEmail);
@@ -13,8 +13,10 @@ export function* watchLoginEmailSaga() {
 
 export function* signUpEmail(action) {
   const { email, password } = action;
+  console.log('signUpEmail 1');
   try {
     const user = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
+    console.log('signUpEmail 2');
   } catch (e) {
     console.log(e);
   }
@@ -22,11 +24,15 @@ export function* signUpEmail(action) {
 
 export function* loginEmail(action) {
   const { email, password } = action;
+  console.log('loginEmail 1');
   try {
     const data = yield call(fire.auth.signInWithEmailAndPassword, email, password);
-    
+    console.log('loginEmail 2');
+  
     if (data) {
+      console.log('me here');
       // NAVIGATE TO MAIN WITH ROUTER_FLUX
+      yield call(Navigation.home);
     }
   } catch (e) {
     console.log(e);

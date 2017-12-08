@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
 import { View, Button, StyleSheet } from 'react-native';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 class Header extends Component {
   static propTypes = {
-    screenProps: PropTypes.object
+    title: PropTypes.string
   }
 
   render() {
-    const { goBack } = this.props.screenProps.navigation;
     return (
       <View style={styles.container}>
-        <Button title={'Back'} onPress={() => goBack()} />
+        <Button 
+          title={ this.props.title ? this.props.title : 'Back' } 
+          onPress={() => Navigation.pop()} />
       </View>
     );
   }

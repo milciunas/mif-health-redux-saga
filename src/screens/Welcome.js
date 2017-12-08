@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchTest } from '../state/actions/testActions';
 import { loginEmail } from '../state/actions/authActions';
 import t from 'tcomb-form-native';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 const Form = t.form.Form;
 
@@ -31,8 +32,7 @@ const options = {
 class WelcomeScreen extends Component {
   static propTypes = {
     fetchTest: PropTypes.func.isRequired,
-    loginEmail: PropTypes.func.isRequired,
-    navigation: PropTypes.object.isRequired
+    loginEmail: PropTypes.func.isRequired
   }
   
   constructor(props) {
@@ -52,7 +52,7 @@ class WelcomeScreen extends Component {
   }
 
   navigateToRegister = () => {
-    this.props.navigation.navigate('Register');
+    Navigation.register();
   }
 
   login = () => {
