@@ -17,6 +17,9 @@ export function* signUpEmail(action) {
   try {
     const user = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
     console.log('signUpEmail 2');
+    if (user) {
+      Navigation.pop();
+    }
   } catch (e) {
     console.log(e);
   }
@@ -28,7 +31,7 @@ export function* loginEmail(action) {
   try {
     const data = yield call(fire.auth.signInWithEmailAndPassword, email, password);
     console.log('loginEmail 2');
-  
+
     if (data) {
       console.log('me here');
       // NAVIGATE TO MAIN WITH ROUTER_FLUX

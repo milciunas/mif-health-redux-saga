@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button, Image } from 'react-native';
+import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTest } from '../state/actions/testActions';
@@ -34,7 +34,7 @@ class WelcomeScreen extends Component {
     fetchTest: PropTypes.func.isRequired,
     loginEmail: PropTypes.func.isRequired
   }
-  
+
   constructor(props) {
     super(props);
 
@@ -67,29 +67,33 @@ class WelcomeScreen extends Component {
   }
 
   render() {
+    const btnBackgroundColor = '#2196F3';
+
     return (
       <View style={styles.screen}>
         <View style={styles.container}>
           <View style={styles.title}>
             <Text style={styles.titleText}>MIF HEALTH</Text>
           </View>
-          <Form 
-            type={User} 
+          <Form
+            type={User}
             options={options}
             value={this.state.form}
             onChange={this.onChange} />
           <View style={styles.loginBtn}>
-            <Button
-              title={'Login'}
+            <TouchableOpacity
+              style={styles.loginScreenButton}
               onPress={this.login}
-              style={styles.btnColor}
-            />
+              underlayColor='#fff'>
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
           </View>
-          <Button
-            title={'Register'}
+          <TouchableOpacity
+            style={styles.loginScreenButton}
             onPress={this.navigateToRegister}
-            style={styles.btnColor}
-          />
+            underlayColor='#fff'>
+            <Text style={styles.loginText}>Register</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -127,7 +131,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700'
   },
-  btnColor: {
-    backgroundColor: '#2196F3'
+  loginScreenButton: {
+    marginRight:40,
+    marginLeft:40,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#2196F3',
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#fff'
+  },
+  loginText:{
+    color:'#fff',
+    textAlign:'center',
+    paddingLeft : 10,
+    paddingRight : 10,
+    fontSize: 20
   }
 });
