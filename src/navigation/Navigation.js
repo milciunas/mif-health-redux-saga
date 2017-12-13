@@ -14,7 +14,7 @@ export default class Navigation extends Component {
         <Stack key='root' hideNavBar={true}>
           <Scene
             key='welcome'
-            component={HomeScreen} />
+            component={WelcomeScreen} />
           <Scene
             key='register'
             component={RegisterScreen} />

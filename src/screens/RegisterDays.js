@@ -55,6 +55,7 @@ const options = {
 
 class RegisterDaysScreen extends Component {
   navigatHome = () => {
+    // TODO: call saga, save days and navigate home
     Navigation.home();
   }
 

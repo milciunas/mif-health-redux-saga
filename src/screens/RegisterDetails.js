@@ -49,9 +49,7 @@ const value = {
 
 class RegisterDetailsScreen extends Component {
   selectDays = () => {
-    //TODO: STORE USER DETAILS
-
-    // NAVIGATE TO DAYS SELECTION
+    //TODO: STORE USER DETAILS WITH REDUCER and NAVIGATE TO DAYS SELECTION
     Navigation.registerDays();
   }
 

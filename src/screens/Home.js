@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import Exercises from './Exercises';
 
 import Header from '../components/Header';
 
@@ -8,9 +9,9 @@ class HomeScreen extends Component {
     return (
       <View style={styles.screen}>
         <Header title={'Log off'}/>
-        <View style={styles.container}>
-          <Text>Render exercises</Text>
-        </View>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Exercises />
+        </ScrollView>
       </View>
     );
   }
@@ -24,7 +25,6 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20
+    padding: 10
   }
 });
