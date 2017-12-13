@@ -16,9 +16,9 @@ export function* signUpEmail(action) {
   console.log('signUpEmail 1');
   try {
     const user = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
-    console.log('signUpEmail 2');
+    console.log('signUpEmail 2', user);
     if (user) {
-      Navigation.pop();
+      yield call(Navigation.registerDetails);
     }
   } catch (e) {
     console.log(e);

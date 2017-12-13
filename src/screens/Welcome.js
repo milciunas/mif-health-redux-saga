@@ -67,8 +67,6 @@ class WelcomeScreen extends Component {
   }
 
   render() {
-    const btnBackgroundColor = '#2196F3';
-
     return (
       <View style={styles.screen}>
         <View style={styles.container}>
@@ -138,12 +136,11 @@ const styles = StyleSheet.create({
     paddingTop:10,
     paddingBottom:10,
     backgroundColor:'#2196F3',
-    borderRadius:10,
-    borderWidth: 1,
-    borderColor: '#fff'
+    borderRadius:20
   },
   loginText:{
     color:'#fff',
+    backgroundColor: 'rgba(0,0,0,0)',
     textAlign:'center',
     paddingLeft : 10,
     paddingRight : 10,

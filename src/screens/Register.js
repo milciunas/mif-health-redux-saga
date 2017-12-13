@@ -34,8 +34,8 @@ const options = {
 class RegisterScreen extends Component {
   static propTypes = {
     signUpEmail: PropTypes.func.isRequired
-  } 
-  
+  }
+
   constructor(props) {
     super(props);
 
@@ -64,8 +64,8 @@ class RegisterScreen extends Component {
       <View style={styles.screen}>
         <Header />
         <View style={styles.container}>
-          <Form 
-            type={User} 
+          <Form
+            type={User}
             options={options}
             value={this.state.form}
             onChange={this.onChange} />
@@ -95,4 +95,3 @@ const styles = StyleSheet.create({
     padding: 20
   }
 });
-
