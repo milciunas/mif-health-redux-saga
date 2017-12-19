@@ -19,14 +19,15 @@ export default class Navigation extends Component {
             key='register'
             component={RegisterScreen} />
           <Scene
-            key='home'
-            component={HomeScreen} />
-          <Scene
             key='registerDetails'
             component={RegisterDetailsScreen} />
           <Scene
             key='registerDays'
             component={RegisterDaysScreen} />
+          <Scene
+            key='home'
+            component={HomeScreen}
+            type='reset' />
         </Stack>
       </Router>
     );

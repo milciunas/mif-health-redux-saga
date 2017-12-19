@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { PropTypes } from 'prop-types';
 import t from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import { Actions as Navigation } from 'react-native-router-flux';
+import { createWorkoutDays } from '../state/actions/authActions';
 
 const Form = t.form.Form;
 
@@ -15,7 +16,7 @@ const Days = t.struct({
   friday: t.Boolean,
   saturday: t.Boolean,
   sunday: t.Boolean
-});
+}, 'Days');
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
@@ -54,9 +55,43 @@ const options = {
 };
 
 class RegisterDaysScreen extends Component {
-  navigatHome = () => {
-    // TODO: call saga, save days and navigate home
-    Navigation.home();
+  static propTypes = {
+    createWorkoutDays: PropTypes.func.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      form: {
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+        sunday: false
+      }
+    };
+  }
+
+  onChange = (form) => {
+    this.setState({ form });
+  }
+
+  createWorkoutDays = () => {
+    let selectedDays = 0;
+    for (const key in this.state.form) {
+      if (this.state.form.hasOwnProperty(key)) {
+        if (this.state.form[key]) {
+          selectedDays++;
+        }
+      }
+    }
+
+    if (selectedDays >= 1) {
+      this.props.createWorkoutDays(selectedDays);
+    }
   }
 
   render() {
@@ -67,10 +102,14 @@ class RegisterDaysScreen extends Component {
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <View style={styles.form}>
-            <Form type={Days} options={options} />
+            <Form
+              type={Days}
+              options={options}
+              value={this.state.form}
+              onChange={this.onChange} />
             <TouchableOpacity
               style={styles.button}
-              onPress={this.navigatHome}
+              onPress={this.createWorkoutDays}
               underlayColor='#fff'>
               <Text style={styles.text}>{'Next'}</Text>
             </TouchableOpacity>
@@ -81,7 +120,11 @@ class RegisterDaysScreen extends Component {
   }
 }
 
-export default connect(null, null)(RegisterDaysScreen);
+const actionsToProps = {
+  createWorkoutDays
+};
+
+export default connect(null, actionsToProps)(RegisterDaysScreen);
 
 const styles = StyleSheet.create({
   screen: {

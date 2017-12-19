@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
-import { Actions as Navigation } from 'react-native-router-flux';
+import { signUpEmailDetails } from '../state/actions/authActions';
 
 const Form = t.form.Form;
 
 const Gender = t.enums({
-  0: 'Male',
-  1: 'Female'
+  male: 'Male',
+  fmale: 'Female'
 });
 
 const level = t.enums({
-  0: 'Beginner',
-  1: 'Intermediate',
-  2: 'Advanced'
-});
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced'
+}, 'Level');
 
 const goal = t.enums({
-  0: 'Weight loss',
-  1: 'Weight gain'
+  loss: 'Weight loss',
+  gain: 'Weight gain'
 }, 'Goal');
 
 const User = t.struct({
@@ -36,7 +37,8 @@ const options = {
       label: 'Training level'
     },
     goal: {
-      label: 'Training goal'
+      label: 'Training goal',
+      nullOption: false
     },
     weight: {
       keyboardType: 'numeric'
@@ -49,44 +51,50 @@ const options = {
   autoCorrect: false
 };
 
-const value = {
-  gender: 0,
-  level: 0,
-  goal: 0
-};
-
 class RegisterDetailsScreen extends Component {
+  static propTypes = {
+    signUpEmailDetails: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       form: {
-        email: '',
-        password: '',
-        name: ''
+        weight: 80,
+        height: 180,
+        gender: 'male',
+        level: 'beginner',
+        goal: 'loss'
       }
     };
   }
 
-  selectDays = () => {
-    //TODO: STORE USER DETAILS WITH REDUCER and NAVIGATE TO DAYS SELECTION
-    Navigation.registerDays();
+  signUpEmailDetails = () => {
+    if (this.state.form) {
+      this.props.signUpEmailDetails(this.state.form);
+    }
+  }
+
+  onChange = (form) => {
+    this.setState({ form });
   }
 
   render() {
     return (
       <View style={styles.screen}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Select workout days</Text>
+          <Text style={styles.title}>{'Enter your details'}</Text>
         </View>
         <ScrollView contentContainerStyle={styles.container}>
           <Form
             type={User}
-            value={value}
-            options={options}/>
+            options={options}
+            value={this.state.form}
+            onChange={this.onChange} />
           <TouchableOpacity
             style={styles.button}
-            onPress={this.selectDays}
+            onPress={this.signUpEmailDetails}
             underlayColor='#fff'>
             <Text style={styles.text}>{'Next'}</Text>
           </TouchableOpacity>
@@ -96,7 +104,11 @@ class RegisterDetailsScreen extends Component {
   }
 }
 
-export default connect(null, null)(RegisterDetailsScreen);
+const actionsToProps = {
+  signUpEmailDetails
+};
+
+export default connect(null, actionsToProps)(RegisterDetailsScreen);
 
 const styles = StyleSheet.create({
   screen: {

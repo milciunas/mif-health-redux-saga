@@ -1,4 +1,10 @@
-import { SIGN_UP_EMAIL, LOGIN_EMAIL, LOGIN_EMAIL_PASSWORD, SIGN_UP_EMAIL_DETAILS } from './actionTypes';
+import {
+  SIGN_UP_EMAIL,
+  LOGIN_EMAIL,
+  LOGIN_EMAIL_PASSWORD,
+  SIGN_UP_EMAIL_DETAILS,
+  CREATE_WORKOUT_DAYS
+} from './actionTypes';
 
 export const signUpEmail = (email, password) => ({
   type: SIGN_UP_EMAIL.REQUESTED,
@@ -21,4 +27,9 @@ export const loginEmailPassword = (uid, email) => ({
   type: LOGIN_EMAIL_PASSWORD,
   uid,
   email
+});
+
+export const createWorkoutDays = (days) => ({
+  type: CREATE_WORKOUT_DAYS.REQUESTED,
+  days
 });

@@ -11,3 +11,4 @@ export const SIGN_UP_EMAIL = createAsyncActionType('SIGN_UP_EMAIL');
 export const SIGN_UP_EMAIL_DETAILS = createAsyncActionType('SIGN_UP_EMAIL_DETAILS');
 export const LOGIN_EMAIL = createAsyncActionType('LOGIN_EMAIL');
 export const LOGIN_EMAIL_PASSWORD = createAsyncActionType('LOGIN_EMAIL_PASSWORD');
+export const CREATE_WORKOUT_DAYS = createAsyncActionType('CREATE_WORKOUT_DAYS');

@@ -9,7 +9,6 @@ class ExerciseComponent extends Component {
   }
 
   render() {
-    console.log('text', this.props.text);
     return (
       <View style={styles.container}>
         <Image

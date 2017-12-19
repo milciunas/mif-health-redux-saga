@@ -1,10 +1,19 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { SIGN_UP_EMAIL, LOGIN_EMAIL, LOGIN_EMAIL_PASSWORD } from '../actions/actionTypes';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {
+  SIGN_UP_EMAIL,
+  LOGIN_EMAIL,
+  LOGIN_EMAIL_PASSWORD,
+  SIGN_UP_EMAIL_DETAILS,
+  CREATE_WORKOUT_DAYS
+} from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 
 export function* watchSignUpEmailSaga() {
   yield takeLatest(SIGN_UP_EMAIL.REQUESTED, signUpEmail);
+  yield takeLatest(SIGN_UP_EMAIL_DETAILS.REQUESTED, emailDetails);
+  yield takeLatest(LOGIN_EMAIL_PASSWORD.SUCCESS, createUserInDatabase);
+  yield takeLatest(CREATE_WORKOUT_DAYS.REQUESTED, createWorkoutDays);
 }
 
 export function* watchLoginEmailSaga() {
@@ -15,7 +24,7 @@ export function* signUpEmail(action) {
   const { email, password } = action;
   try {
     const user = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
-    console.log('signUpEmail', user);
+    // yield call(fire.auth.sendEmailVerification);
     if (user) {
       yield call(loginEmailPassword, email, password, user.uid);
       yield call(Navigation.registerDetails);
@@ -41,13 +50,81 @@ export function* loginEmail(action) {
   try {
     const { uid } = yield call(fire.auth.signInWithEmailAndPassword, email, password);
 
-    console.log('asdasd', uid);
     if (uid) {
       yield put({ type: LOGIN_EMAIL_PASSWORD.SUCCESS, uid, email });
-      // NAVIGATE TO MAIN WITH ROUTER_FLUX
-      yield call(Navigation.home);
     }
   } catch (e) {
     console.log(e);
   }
+}
+
+export function* createUserInDatabase(action) {
+  const user = yield call(fire.database.read, 'users/' + action.uid);
+
+  if (user) {
+    let key;
+    for(const id in user) {
+      key = id;
+    }
+
+    if (key) {
+      const userData = yield call(fire.database.read, 'users/' + action.uid + '/' + key);
+      if (!userData.weight ||
+          !userData.height ||
+          !userData.goal ||
+          !userData.level ||
+          !userData.gender) {
+
+        yield call(Navigation.registerDetails);
+      } else {
+        yield call(Navigation.home);
+      }
+    }
+  } else {
+    yield call(fire.database.create, 'users/' + action.uid, {
+      uid: action.uid,
+      email: action.email
+    });
+  }
+}
+
+export function* emailDetails(action) {
+  const { height, weight, gender, level, goal } = action.details;
+  const state = yield select(state => state.auth);
+  const user = yield call(fire.database.read, 'users/' + state.uid);
+
+  if (user) {
+    let key;
+    for(const id in user) {
+      key = id;
+    }
+
+    if (key) {
+      yield call(fire.database.patch, 'users/' + state.uid + '/' + key, {
+        height, weight, gender, level, goal
+      });
+    }
+  }
+
+  yield call(Navigation.registerDays);
+}
+
+export function* createWorkoutDays(action) {
+  // MAP DAYS SOMEHOW AND GENERATE A WORKOUT
+  switch (action.days) {
+    case 1:
+      yield call(createOneDayWorkout);
+      break;
+    default:
+      yield call(createThreeDayWorkout);
+  }
+  yield;
+}
+
+function* createOneDayWorkout() {
+  yield call(Navigation.home);
+}
+
+function* createThreeDayWorkout() {
+  yield call(Navigation.home);
 }
