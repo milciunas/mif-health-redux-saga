@@ -50,9 +50,7 @@ stylesheet.checkbox = {
 };
 
 const options = {
-  stylesheet: stylesheet,
-  autoCapitalize: 'none',
-  autoCorrect: false
+  stylesheet: stylesheet
 };
 
 class RegisterDaysScreen extends Component {

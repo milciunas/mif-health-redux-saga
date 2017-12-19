@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { SIGN_UP_EMAIL, LOGIN_EMAIL } from '../actions/actionTypes';
+import { SIGN_UP_EMAIL, LOGIN_EMAIL, LOGIN_EMAIL_PASSWORD } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 
@@ -13,11 +13,11 @@ export function* watchLoginEmailSaga() {
 
 export function* signUpEmail(action) {
   const { email, password } = action;
-  console.log('signUpEmail 1');
   try {
     const user = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
-    console.log('signUpEmail 2', user);
+    console.log('signUpEmail', user);
     if (user) {
+      yield call(loginEmailPassword, email, password, user.uid);
       yield call(Navigation.registerDetails);
     }
   } catch (e) {
@@ -25,15 +25,25 @@ export function* signUpEmail(action) {
   }
 }
 
+function* loginEmailPassword(email, password, uid) {
+  try {
+    const success = yield call(fire.auth.signInWithEmailAndPassword, email, password);
+    if (success) {
+      yield put({ type: LOGIN_EMAIL_PASSWORD.SUCCESS, uid, email });
+    }
+  } catch (error) {
+    console.log('Error in login with email and password: ', email, password, uid, error);
+  }
+}
+
 export function* loginEmail(action) {
   const { email, password } = action;
-  console.log('loginEmail 1');
   try {
-    const data = yield call(fire.auth.signInWithEmailAndPassword, email, password);
-    console.log('loginEmail 2');
+    const { uid } = yield call(fire.auth.signInWithEmailAndPassword, email, password);
 
-    if (data) {
-      console.log('me here');
+    console.log('asdasd', uid);
+    if (uid) {
+      yield put({ type: LOGIN_EMAIL_PASSWORD.SUCCESS, uid, email });
       // NAVIGATE TO MAIN WITH ROUTER_FLUX
       yield call(Navigation.home);
     }

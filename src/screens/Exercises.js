@@ -8,7 +8,6 @@ class Exercises extends Component {
     for (let i = 0; i < 10; i++) {
       stuff.push({ text: 'Training nr: ' + i, id: i });
     }
-    console.log('test', ExerciseComponent);
 
     const test = stuff.map(item => {
       return (<ExerciseComponent key={item.id} text={item.text} />);

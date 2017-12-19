@@ -23,13 +23,22 @@ const User = t.struct({
 const options = {
   auto: 'placeholders',
   fields: {
+    email: {
+      autoCorrect: false,
+      autoCapitalize: 'none',
+      keyboardType: 'email-address'
+    },
     password: {
       password: true,
-      secureTextEntry: true
+      secureTextEntry: true,
+      autoCapitalize: 'none',
+      autoCorrect: false
+    },
+    name: {
+      autoCapitalize: 'none',
+      autoCorrect: false
     }
-  },
-  autoCapitalize: 'none',
-  autoCorrect: false
+  }
 };
 
 class RegisterScreen extends Component {

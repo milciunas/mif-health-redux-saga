@@ -37,6 +37,12 @@ const options = {
     },
     goal: {
       label: 'Training goal'
+    },
+    weight: {
+      keyboardType: 'numeric'
+    },
+    height: {
+      keyboardType: 'numeric'
     }
   },
   autoCapitalize: 'none',
@@ -50,6 +56,18 @@ const value = {
 };
 
 class RegisterDetailsScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      form: {
+        email: '',
+        password: '',
+        name: ''
+      }
+    };
+  }
+
   selectDays = () => {
     //TODO: STORE USER DETAILS WITH REDUCER and NAVIGATE TO DAYS SELECTION
     Navigation.registerDays();
