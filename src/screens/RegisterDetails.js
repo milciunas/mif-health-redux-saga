@@ -38,7 +38,9 @@ const options = {
     goal: {
       label: 'Training goal'
     }
-  }
+  },
+  autoCapitalize: 'none',
+  autoCorrect: false
 };
 
 const value = {

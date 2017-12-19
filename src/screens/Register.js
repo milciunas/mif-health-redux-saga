@@ -3,7 +3,6 @@ import { View, Button, StyleSheet } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
-import * as firebase from 'firebase';
 import { signUpEmail } from '../state/actions/authActions';
 
 import Header from '../components/Header';
@@ -28,7 +27,9 @@ const options = {
       password: true,
       secureTextEntry: true
     }
-  }
+  },
+  autoCapitalize: 'none',
+  autoCorrect: false
 };
 
 class RegisterScreen extends Component {

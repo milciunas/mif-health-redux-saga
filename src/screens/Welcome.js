@@ -26,7 +26,9 @@ const options = {
       password: true,
       secureTextEntry: true
     }
-  }
+  },
+  autoCapitalize: 'none',
+  autoCorrect: false
 };
 
 class WelcomeScreen extends Component {
