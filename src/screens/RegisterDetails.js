@@ -14,8 +14,7 @@ const Gender = t.enums({
 
 const level = t.enums({
   beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced'
+  intermediate: 'Intermediate'
 }, 'Level');
 
 const goal = t.enums({
@@ -26,6 +25,7 @@ const goal = t.enums({
 const User = t.struct({
   weight: t.Number,
   height: t.Number,
+  age: t.Number,
   gender: Gender,
   level: level,
   goal: goal
@@ -33,8 +33,13 @@ const User = t.struct({
 
 const options = {
   fields: {
+    gender: {
+      label: 'Gender',
+      nullOption: false
+    },
     level: {
-      label: 'Training level'
+      label: 'Training level',
+      nullOption: false
     },
     goal: {
       label: 'Training goal',
@@ -44,6 +49,9 @@ const options = {
       keyboardType: 'numeric'
     },
     height: {
+      keyboardType: 'numeric'
+    },
+    age: {
       keyboardType: 'numeric'
     }
   },
@@ -63,6 +71,7 @@ class RegisterDetailsScreen extends Component {
       form: {
         weight: 80,
         height: 180,
+        age: 16,
         gender: 'male',
         level: 'beginner',
         goal: 'loss'

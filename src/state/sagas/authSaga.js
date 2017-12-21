@@ -8,6 +8,7 @@ import {
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
+import * as _ from 'lodash';
 
 export function* watchSignUpEmailSaga() {
   yield takeLatest(SIGN_UP_EMAIL.REQUESTED, signUpEmail);
@@ -73,7 +74,8 @@ export function* createUserInDatabase(action) {
           !userData.height ||
           !userData.goal ||
           !userData.level ||
-          !userData.gender) {
+          !userData.gender ||
+          !userData.age) {
 
         yield call(Navigation.registerDetails);
       } else {
@@ -89,7 +91,8 @@ export function* createUserInDatabase(action) {
 }
 
 export function* emailDetails(action) {
-  const { height, weight, gender, level, goal } = action.details;
+  const { height, weight, gender, level, goal, age } = action.details;
+  const { details } = action;
   const state = yield select(state => state.auth);
   const user = yield call(fire.database.read, 'users/' + state.uid);
 
@@ -101,12 +104,13 @@ export function* emailDetails(action) {
 
     if (key) {
       yield call(fire.database.patch, 'users/' + state.uid + '/' + key, {
-        height, weight, gender, level, goal
+        height, weight, gender, level, goal, age
       });
     }
   }
 
-  yield call(Navigation.registerDays);
+  yield call(Navigation.home);
+  yield put({ type: SIGN_UP_EMAIL_DETAILS.SUCCESS, details });
 }
 
 export function* createWorkoutDays(action) {
@@ -122,7 +126,8 @@ export function* createWorkoutDays(action) {
 }
 
 function* createOneDayWorkout() {
-  yield call(Navigation.home);
+  const exercises = yield call(fire.database.read, 'exercises');
+  // yield call(Navigation.home);
 }
 
 function* createThreeDayWorkout() {

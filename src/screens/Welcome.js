@@ -45,11 +45,11 @@ class WelcomeScreen extends Component {
   constructor(props) {
     super(props);
 
+    // REMOVE HARDCODED DETAILS!!!!
     this.state = {
       form: {
-        email: '',
-        password: '',
-        name: ''
+        email: 'test@test.lt',
+        password: 'testas1'
       }
     };
   }

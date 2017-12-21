@@ -17,6 +17,11 @@ export const signUpEmailDetails = (details) => ({
   details
 });
 
+export const signUpEmailDetailsDone = (details) => ({
+  type: SIGN_UP_EMAIL_DETAILS.SUCCESS,
+  details
+});
+
 export const loginEmail = (email, password) => ({
   type: LOGIN_EMAIL.REQUESTED,
   email,
