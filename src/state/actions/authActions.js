@@ -3,7 +3,8 @@ import {
   LOGIN_EMAIL,
   LOGIN_EMAIL_PASSWORD,
   SIGN_UP_EMAIL_DETAILS,
-  CREATE_WORKOUT_DAYS
+  CREATE_WORKOUT_DAYS,
+  FETCH_USER_WORKOUT
 } from './actionTypes';
 
 export const signUpEmail = (email, password) => ({
@@ -37,4 +38,13 @@ export const loginEmailPassword = (uid, email) => ({
 export const createWorkoutDays = (days) => ({
   type: CREATE_WORKOUT_DAYS.REQUESTED,
   days
+});
+
+export const fetchUserWorkout = () => ({
+  type: FETCH_USER_WORKOUT.REQUESTED
+});
+
+export const storeUserWorkout = (workout) => ({
+  type: FETCH_USER_WORKOUT.SUCCESS,
+  workout
 });

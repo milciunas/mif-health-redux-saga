@@ -4,7 +4,8 @@ import {
   LOGIN_EMAIL,
   LOGIN_EMAIL_PASSWORD,
   SIGN_UP_EMAIL_DETAILS,
-  CREATE_WORKOUT_DAYS
+  CREATE_WORKOUT_DAYS,
+  FETCH_USER_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { actions as Navigation } from 'react-native-router-flux';
@@ -46,6 +47,7 @@ const muscleGroups = [
 export function* watchWorkoutSaga() {
   yield takeLatest(SIGN_UP_EMAIL_DETAILS.SUCCESS, createWorkout);
   yield takeLatest(LOGIN_EMAIL_PASSWORD.SUCCESS, createWorkoutAfterlogin);
+  yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
 }
 
 export function* createWorkoutAfterlogin(action) {
@@ -53,8 +55,6 @@ export function* createWorkoutAfterlogin(action) {
 
   if (userDetails && !userDetails.workout) {
     yield call(createWorkout, userDetails);
-  } else {
-    console.log('READ WORKOUT FROM DB AND POPULATE REDUCER');
   }
 }
 
@@ -64,6 +64,8 @@ export function* createWorkout(action) {
   const exercises = yield call(fire.database.read, 'exercises');
 
   const workout = yield call(createWorkoutByDay, action, workoutMuscles, workoutDays, exercises);
+
+  console.log('workout wtf', workout);
 
   if (workout.length > 0) {
     yield call(fire.database.patch, 'users/' + action.uid + '/' + action.key, {
@@ -198,8 +200,11 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
                 musclesToFind.forEach(muscle => {
                   const exercise = findExercise(muscle, details, exercises);
                   if (exercise.length > 0) {
-                    exercise['day'] = days[i];
-                    exercise['workout_id'] = i;
+                    console.log('is exercise an array???', exercise);
+                    exercise.push({
+                      'day': getDayNumber(days[i]),
+                      'workout_id': i
+                    });
                     workoutByDay.push(exercise);
                   }
                 });
@@ -211,7 +216,26 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
     });
   }
 
+  console.log('Created workout ', workoutByDay);
   return workoutByDay;
+}
+
+export function getDayNumber(day) {
+  if (day === 'Monday') {
+    return 1;
+  } else if (day === 'Tuesday') {
+    return 2;
+  } else if (day === 'Wednesday') {
+    return 3;
+  } else if (day === 'Thursday') {
+    return 4;
+  } else if (day === 'Friday') {
+    return 5;
+  } else if (day === 'Saturday') {
+    return 6;
+  } else if (day === 'Sunday') {
+    return 7;
+  }
 }
 
 export function findExercise(muscleToFind, details, exercises) {
@@ -232,3 +256,24 @@ export function findExercise(muscleToFind, details, exercises) {
 Array.prototype.randomExercise = function() {
   return this[Math.floor(Math.random() * this.length)];
 };
+
+export function* fetchUserWorkout() {
+  const state = yield select(state => state.auth);
+  const user = yield call(fire.database.read, 'users/' + state.uid);
+  let workout;
+
+  if (user) {
+    let key;
+    for(const id in user) {
+      key = id;
+    }
+
+    if (key) {
+      workout = yield call(fire.database.read, 'users/' + state.uid + '/' + key + '/workout');
+    }
+  }
+  console.log('workout from user', workout);
+  if (workout.length > 0) {
+    yield put({ type: FETCH_USER_WORKOUT.SUCCESS, workout });
+  }
+}

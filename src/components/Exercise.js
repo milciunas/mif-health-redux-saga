@@ -5,17 +5,33 @@ import { PropTypes } from 'prop-types';
 
 class ExerciseComponent extends Component {
   static propTypes = {
-    text: PropTypes.string
+    image_end: PropTypes.string,
+    image_start: PropTypes.string,
+    level: PropTypes.string,
+    muscle: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string
   }
 
+  componentWillReceiveProps(props) {
+    this.setState(...props);
+  }
+
+  //
+  //   RENDER DEFAULT VALUES IF NONE WAS PASSED
+  //
+  //  source={{require('./test.jpg')}} />
+
   render() {
+    console.log('image', this.props.image_start);
+    console.log('ALL PROPS', this.props);
     return (
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require('./test.jpg')} />
+          source={{ uri: this.props.image_start }} />
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{this.props.text}</Text>
+          <Text style={styles.text}>{this.props.name}</Text>
           <TouchableOpacity
             style={styles.loginScreenButton}
             onPress={this.navigateToRegister}
@@ -28,7 +44,7 @@ class ExerciseComponent extends Component {
   }
 }
 
-export default ExerciseComponent;
+export default connect(null, null)(ExerciseComponent);
 
 const styles = StyleSheet.create({
   container: {
