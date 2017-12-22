@@ -31,7 +31,7 @@ const muscleGroups = [
     back: 'traps/middle_back/lats/lower_back'
   },
   {
-    arms: 'biceps/forearm/triceps'
+    arms: 'biceps/forearms/triceps'
   },
   {
     shoulders: 'shoulders'
