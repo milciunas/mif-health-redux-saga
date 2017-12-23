@@ -1,5 +1,5 @@
-import { Record, List } from 'immutable';
-import { LOGIN_EMAIL_PASSWORD, FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL, LOGIN_WITH_EMAIL } from '../actions/actionTypes';
+import { Record } from 'immutable';
+import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL, LOGIN_WITH_EMAIL } from '../actions/actionTypes';
 
 const initialState = Record({
   uid: null,

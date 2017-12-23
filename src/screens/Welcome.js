@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTest } from '../state/actions/testActions';
-import { loginEmail } from '../state/actions/authActions';
+import { loginWithEmail } from '../state/actions/authActions';
 import t from 'tcomb-form-native';
 import { Actions as Navigation } from 'react-native-router-flux';
 
@@ -38,8 +37,7 @@ const options = {
 
 class WelcomeScreen extends Component {
   static propTypes = {
-    fetchTest: PropTypes.func.isRequired,
-    loginEmail: PropTypes.func.isRequired
+    loginWithEmail: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -54,10 +52,6 @@ class WelcomeScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchTest();
-  }
-
   navigateToRegister = () => {
     Navigation.register();
   }
@@ -65,7 +59,7 @@ class WelcomeScreen extends Component {
   login = () => {
     const { email, password } = this.state.form;
     if (email && password && email.length > 0 && password.length > 0) {
-      this.props.loginEmail(email, password);
+      this.props.loginWithEmail(email, password, 'login');
     }
   }
 
@@ -78,7 +72,7 @@ class WelcomeScreen extends Component {
       <View style={styles.screen}>
         <View style={styles.container}>
           <View style={styles.title}>
-            <Text style={styles.titleText}>MIF HEALTH</Text>
+            <Text style={styles.titleText}>{'MIF HEALTH'}</Text>
           </View>
           <Form
             type={User}
@@ -106,12 +100,10 @@ class WelcomeScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  exercises: state.test.exercises.toJS()
 });
 
 const actionsToProps = {
-  fetchTest,
-  loginEmail
+  loginWithEmail
 };
 
 export default connect(mapStateToProps, actionsToProps)(WelcomeScreen);

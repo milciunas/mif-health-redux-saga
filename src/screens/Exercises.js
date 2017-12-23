@@ -5,7 +5,7 @@ import ExerciseComponent from '../components/Exercise';
 import moment from 'moment';
 
 // const weekday = moment().weekday();
-const weekday = moment().day() - 1;
+const weekday = moment().day() - 2;
 
 class Exercises extends Component {
   static propTypes = {
@@ -13,11 +13,16 @@ class Exercises extends Component {
   }
 
   render() {
+    console.log('this.props.exercises', this.props.exercises);
+
     let exercisesWithDay;
     const exercisesList = [];
 
     this.props.exercises.map(exercises => {
       exercises.map(e => {
+        console.log('e', e);
+        console.log('e day', e.day);
+        console.log('weekday', weekday);
         if (e.day && e.day === weekday) {
           exercisesWithDay = exercises;
         }

@@ -1,14 +1,10 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
-  SIGN_UP_EMAIL,
-  LOGIN_EMAIL,
-  LOGIN_EMAIL_PASSWORD,
-  SIGN_UP_EMAIL_DETAILS,
-  CREATE_WORKOUT_DAYS,
-  FETCH_USER_WORKOUT
+  FETCH_USER_WORKOUT,
+  CREATE_USER_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
-import { actions as Navigation } from 'react-native-router-flux';
+import { Actions as Navigation } from 'react-native-router-flux';
 import * as _ from 'lodash';
 import * as firebase from 'firebase';
 
@@ -45,9 +41,8 @@ const muscleGroups = [
 ];
 
 export function* watchWorkoutSaga() {
-  yield takeLatest(SIGN_UP_EMAIL_DETAILS.SUCCESS, createWorkout);
-  yield takeLatest(LOGIN_EMAIL_PASSWORD.SUCCESS, createWorkoutAfterlogin);
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
+  yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
 }
 
 export function* createWorkoutAfterlogin(action) {
@@ -58,19 +53,20 @@ export function* createWorkoutAfterlogin(action) {
   }
 }
 
-export function* createWorkout(action) {
-  const workoutMuscles = yield call(getWorkoutMuscleGroups, action);
+export function* createWorkout({ details }) {
+  const workoutMuscles = yield call(getWorkoutMuscleGroups, details);
   const workoutDays = yield call(getWorkoutDays, workoutMuscles.length);
   const exercises = yield call(fire.database.read, 'exercises');
+  const workout = yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
 
-  const workout = yield call(createWorkoutByDay, action, workoutMuscles, workoutDays, exercises);
-
-  console.log('workout wtf', workout);
-
-  if (workout.length > 0) {
-    yield call(fire.database.patch, 'users/' + action.uid + '/' + action.key, {
-      workout
-    });
+  try {
+    if (workout.length > 0) {
+      yield call(fire.database.patch, 'users/' + details.uid, { workout });
+    }
+  } catch (e) {
+    console.log('Error while storing workout to user profile');
+  } finally {
+    yield call(Navigation.home);
   }
 }
 
@@ -259,21 +255,20 @@ Array.prototype.randomExercise = function() {
 
 export function* fetchUserWorkout() {
   const state = yield select(state => state.auth);
-  const user = yield call(fire.database.read, 'users/' + state.uid);
-  let workout;
 
-  if (user) {
-    let key;
-    for(const id in user) {
-      key = id;
-    }
+  try {
+    const user = yield call(fire.database.read, 'users/' + state.uid);
+    let workout;
 
-    if (key) {
-      workout = yield call(fire.database.read, 'users/' + state.uid + '/' + key + '/workout');
+    if (user) {
+      workout = yield call(fire.database.read, 'users/' + state.uid + '/workout');
     }
-  }
-  console.log('workout from user', workout);
-  if (workout.length > 0) {
-    yield put({ type: FETCH_USER_WORKOUT.SUCCESS, workout });
+    if (workout.length > 0) {
+      yield put({ type: FETCH_USER_WORKOUT.SUCCESS, workout });
+    }
+  } catch (e) {
+    console.log('Error while fetching user workout');
+  } finally {
+    yield call(Navigation.home);
   }
 }

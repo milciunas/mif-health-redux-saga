@@ -7,19 +7,17 @@ import Exercises from './Exercises';
 
 class HomeScreen extends Component {
   static propTypes = {
-    fetchUserWorkout: PropTypes.func,
-    workout: PropTypes.array
-  }
-
-  componentWillMount() {
-    // this.props.fetchUserWorkout();
+    user: PropTypes.object
   }
 
   render() {
+    console.log('What do we have in user state', this.props.user);
+    console.log('What do we have in user state', this.props.user.workout);
+
     return (
       <View style={styles.screen}>
         <ScrollView contentContainerStyle={styles.container}>
-          <Exercises exercises={this.props.workout}/>
+          <Exercises exercises={this.props.user.workout}/>
         </ScrollView>
       </View>
     );
@@ -31,7 +29,7 @@ const actionsToProps = {
 };
 
 const mapStateToProps = state => ({
-  workout: state.auth.workout
+  user: state.auth
 });
 
 export default connect(mapStateToProps, actionsToProps)(HomeScreen);

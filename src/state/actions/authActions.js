@@ -1,51 +1,10 @@
 import {
-  SIGN_UP_EMAIL,
-  LOGIN_EMAIL,
-  LOGIN_EMAIL_PASSWORD,
-  SIGN_UP_EMAIL_DETAILS,
-  CREATE_WORKOUT_DAYS,
-  FETCH_USER_WORKOUT,
   REGISTER_WITH_EMAIL,
   LOGIN_WITH_EMAIL,
-  CREATE_USER_DETAILS
+  CREATE_USER_DETAILS,
+  FETCH_USER_WORKOUT,
+  CREATE_USER_WORKOUT
 } from './actionTypes';
-
-export const signUpEmail = (email, password) => ({
-  type: SIGN_UP_EMAIL.REQUESTED,
-  email,
-  password
-});
-
-export const signUpEmailDetails = (details) => ({
-  type: SIGN_UP_EMAIL_DETAILS.REQUESTED,
-  details
-});
-
-export const signUpEmailDetailsDone = (details) => ({
-  type: SIGN_UP_EMAIL_DETAILS.SUCCESS,
-  details
-});
-
-export const loginEmail = (email, password) => ({
-  type: LOGIN_EMAIL.REQUESTED,
-  email,
-  password
-});
-
-export const loginEmailPassword = (uid, email) => ({
-  type: LOGIN_EMAIL_PASSWORD,
-  uid,
-  email
-});
-
-export const createWorkoutDays = (days) => ({
-  type: CREATE_WORKOUT_DAYS.REQUESTED,
-  days
-});
-
-export const fetchUserWorkout = () => ({
-  type: FETCH_USER_WORKOUT.REQUESTED
-});
 
 export const storeUserWorkout = (workout) => ({
   type: FETCH_USER_WORKOUT.SUCCESS,
@@ -58,6 +17,13 @@ export const registerWithEmail = (email, password) => ({
   password
 });
 
+export const loginWithEmail = (email, password, fromWhere) => ({
+  type: LOGIN_WITH_EMAIL.REQUESTED,
+  email,
+  password,
+  fromWhere
+});
+
 export const setUserAfterRegistration = (uid, email) => ({
   type: LOGIN_WITH_EMAIL.SUCCESS,
   uid,
@@ -66,5 +32,14 @@ export const setUserAfterRegistration = (uid, email) => ({
 
 export const createUserDetails = (details) => ({
   type: CREATE_USER_DETAILS.REQUESTED,
+  details
+});
+
+export const fetchUserWorkout = () => ({
+  type: FETCH_USER_WORKOUT.REQUESTED
+});
+
+export const createUserWorkout = (details) => ({
+  type: CREATE_USER_WORKOUT.REQUESTED,
   details
 });

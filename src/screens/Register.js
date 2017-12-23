@@ -3,7 +3,7 @@ import { View, Button, StyleSheet, Text } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
-import { signUpEmail, registerWithEmail } from '../state/actions/authActions';
+import { registerWithEmail } from '../state/actions/authActions';
 
 import Header from '../components/Header';
 
@@ -62,7 +62,6 @@ class RegisterScreen extends Component {
   signUp = () => {
     const { email, password } = this.state.form;
     if (email && password && email.length > 0 && password.length > 0) {
-      // this.props.signUpEmail(email, password);
       this.props.registerWithEmail(email, password);
     }
   }
@@ -105,7 +104,6 @@ const mapStateToProps = state => ({
 });
 
 const actionsToProps = {
-  signUpEmail,
   registerWithEmail
 };
 
