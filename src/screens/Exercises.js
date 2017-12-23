@@ -5,7 +5,7 @@ import ExerciseComponent from '../components/Exercise';
 import moment from 'moment';
 
 // const weekday = moment().weekday();
-const weekday = moment().day() - 2;
+const weekday = moment().day();
 
 class Exercises extends Component {
   static propTypes = {
@@ -47,15 +47,23 @@ class Exercises extends Component {
 
     return (
       <View style={styles.screen}>
-        <FlatList
-          data={exercisesList}
-          renderItem={({ item }) =>
-            <ExerciseComponent
-              key={item.id}
-              {...item}
-            />
-          }
-        />
+        {
+          exercisesList.length > 0 ?
+            <FlatList
+              data={exercisesList}
+              renderItem={({ item }) =>
+                <ExerciseComponent
+                  key={item.id}
+                  {...item}
+                />
+              }
+            /> :
+            <View style={styles.emptyContainer}>
+              <View style={styles.boxContainer}>
+                <Text style={styles.emptyContainerText}>{'No exercises for today!'}</Text>
+              </View>
+            </View>
+        }
       </View>
     );
   }
@@ -66,5 +74,21 @@ export default Exercises;
 const styles = StyleSheet.create({
   screen: {
     flex: 1
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  boxContainer: {
+    padding: 50,
+    borderWidth: 1,
+    borderColor: 'rgba(8,8,8,0.2)'
+  },
+  emptyContainerText: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '600',
+    color: 'rgba(8,8,8,0.6)'
   }
 });
