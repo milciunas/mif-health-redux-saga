@@ -12,8 +12,28 @@ export function* fetchTest() {
   try {
     //CREATE ITEM IN TABLE
 
-    // for (let i = 0; i < 101; i++) {
-    //   yield call(createExercise, i);
+    // for (let i = 140; i < 145; i++) {
+    //   firebase.database().ref('exercises/' + i).set({
+    //     'level' : 'Beginner',
+    //     'muscle' : 'quads',
+    //     'name' : '',
+    //     'type' : 'Cardio',
+    //     'image_start' : '',
+    //     'image_end' : '',
+    //     'id': i
+    //   });
+    // }
+
+    // for (let i = 145; i < 150; i++) {
+    //   firebase.database().ref('exercises/' + i).set({
+    //     'level' : 'Intermediate',
+    //     'muscle' : 'quads',
+    //     'name' : '',
+    //     'type' : 'Cardio',
+    //     'image_start' : '',
+    //     'image_end' : '',
+    //     'id': i
+    //   });
     // }
 
 

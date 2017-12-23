@@ -12,7 +12,7 @@ class HomeScreen extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchUserWorkout();
+    // this.props.fetchUserWorkout();
   }
 
   render() {

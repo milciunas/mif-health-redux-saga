@@ -4,7 +4,10 @@ import {
   LOGIN_EMAIL_PASSWORD,
   SIGN_UP_EMAIL_DETAILS,
   CREATE_WORKOUT_DAYS,
-  FETCH_USER_WORKOUT
+  FETCH_USER_WORKOUT,
+  REGISTER_WITH_EMAIL,
+  LOGIN_WITH_EMAIL,
+  CREATE_USER_DETAILS
 } from './actionTypes';
 
 export const signUpEmail = (email, password) => ({
@@ -47,4 +50,21 @@ export const fetchUserWorkout = () => ({
 export const storeUserWorkout = (workout) => ({
   type: FETCH_USER_WORKOUT.SUCCESS,
   workout
+});
+
+export const registerWithEmail = (email, password) => ({
+  type: REGISTER_WITH_EMAIL.REQUESTED,
+  email,
+  password
+});
+
+export const setUserAfterRegistration = (uid, email) => ({
+  type: LOGIN_WITH_EMAIL.SUCCESS,
+  uid,
+  email
+});
+
+export const createUserDetails = (details) => ({
+  type: CREATE_USER_DETAILS.REQUESTED,
+  details
 });

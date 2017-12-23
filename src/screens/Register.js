@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet, Text } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
-import { signUpEmail } from '../state/actions/authActions';
+import { signUpEmail, registerWithEmail } from '../state/actions/authActions';
 
 import Header from '../components/Header';
 
@@ -43,7 +43,8 @@ const options = {
 
 class RegisterScreen extends Component {
   static propTypes = {
-    signUpEmail: PropTypes.func.isRequired
+    registerWithEmail: PropTypes.func.isRequired,
+    error: PropTypes.string
   }
 
   constructor(props) {
@@ -61,7 +62,8 @@ class RegisterScreen extends Component {
   signUp = () => {
     const { email, password } = this.state.form;
     if (email && password && email.length > 0 && password.length > 0) {
-      this.props.signUpEmail(email, password);
+      // this.props.signUpEmail(email, password);
+      this.props.registerWithEmail(email, password);
     }
   }
 
@@ -70,9 +72,18 @@ class RegisterScreen extends Component {
   }
 
   render() {
+    this.props.error='erroras with something';
     return (
       <View style={styles.screen}>
         <Header />
+        {
+          !this.props.error ? null :
+            <View style={styles.error}>
+              <Text style={styles.errorText}>
+                {this.props.error}
+              </Text>
+            </View>
+        }
         <View style={styles.container}>
           <Form
             type={User}
@@ -89,11 +100,16 @@ class RegisterScreen extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  error: state.auth.registrationError
+});
+
 const actionsToProps = {
-  signUpEmail
+  signUpEmail,
+  registerWithEmail
 };
 
-export default connect(null, actionsToProps)(RegisterScreen);
+export default connect(mapStateToProps, actionsToProps)(RegisterScreen);
 
 const styles = StyleSheet.create({
   screen: {
@@ -101,7 +117,17 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 20,
     padding: 20
+  },
+  error: {
+    justifyContent: 'center'
+  },
+  errorText: {
+    marginTop: 20,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
+    color: 'red'
   }
 });

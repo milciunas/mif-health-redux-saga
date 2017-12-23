@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-nati
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
-import { signUpEmailDetails } from '../state/actions/authActions';
+import { createUserDetails } from '../state/actions/authActions';
 
 const Form = t.form.Form;
 
@@ -61,7 +61,7 @@ const options = {
 
 class RegisterDetailsScreen extends Component {
   static propTypes = {
-    signUpEmailDetails: PropTypes.func.isRequired
+    createUserDetails: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -81,7 +81,7 @@ class RegisterDetailsScreen extends Component {
 
   signUpEmailDetails = () => {
     if (this.state.form) {
-      this.props.signUpEmailDetails(this.state.form);
+      this.props.createUserDetails(this.state.form);
     }
   }
 
@@ -114,7 +114,7 @@ class RegisterDetailsScreen extends Component {
 }
 
 const actionsToProps = {
-  signUpEmailDetails
+  createUserDetails
 };
 
 export default connect(null, actionsToProps)(RegisterDetailsScreen);
