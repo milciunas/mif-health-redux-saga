@@ -5,7 +5,7 @@ const initialState = Record({
   uid: null,
   email: null,
   registrationError: '',
-  workout: []
+  exercises: []
 });
 
 function setUser(state, action) {
@@ -15,7 +15,8 @@ function setUser(state, action) {
 }
 
 function setUserWorkout(state, action) {
-  return state.set('workout', action.workout);
+  console.log('reducer', action);
+  return state.set('exercises', action.exercises);
 }
 
 function setRegistrationError(state, action) {

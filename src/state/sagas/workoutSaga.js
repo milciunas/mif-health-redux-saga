@@ -1,100 +1,32 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   FETCH_USER_WORKOUT,
-  CREATE_USER_WORKOUT
+  CREATE_USER_WORKOUT,
+  GET_TODAYS_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 import * as _ from 'lodash';
 import * as firebase from 'firebase';
-
-// TODO IMPLEMENT REPS
-const gainReps = {
-  sets: 2,
-  reps: 20
-};
-
-const lossReps = {
-  sets: 3,
-  reps: 8
-};
-
-const muscleGroups = [
-  {
-    chest: 'chest/abs'
-  },
-  {
-    back: 'traps/middle_back/lats/lower_back'
-  },
-  {
-    arms: 'biceps/forearms/triceps'
-  },
-  {
-    shoulders: 'shoulders'
-  },
-  {
-    legs: 'quads/hamstrings/glutes/calves'
-  },
-  {
-    cardio: 'cardio'
-  }
-];
+import moment from 'moment';
 
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
   yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
-}
-
-export function* createWorkoutAfterlogin(action) {
-  const userDetails = yield call(getUserDetails, action);
-
-  if (userDetails && !userDetails.workout) {
-    yield call(createWorkout, userDetails);
-  }
+  yield takeLatest(GET_TODAYS_WORKOUT.REQUESTED, getTodaysWorkout);
 }
 
 export function* createWorkout({ details }) {
   const workoutMuscles = yield call(getWorkoutMuscleGroups, details);
   const workoutDays = yield call(getWorkoutDays, workoutMuscles.length);
   const exercises = yield call(fire.database.read, 'exercises');
-  const workout = yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
 
   try {
-    if (workout.length > 0) {
-      yield call(fire.database.patch, 'users/' + details.uid, { workout });
-    }
+    yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
   } catch (e) {
-    console.log('Error while storing workout to user profile');
+    console.log('Error while creating a workout in user profile', e);
   } finally {
     yield call(Navigation.home);
-  }
-}
-
-export function* getUserDetails(action) {
-  const user = yield call(fire.database.read, 'users/' + action.uid);
-
-  if (user) {
-    let key;
-    for(const id in user) {
-      key = id;
-    }
-
-    if (key) {
-      const userData = yield call(fire.database.read, 'users/' + action.uid + '/' + key);
-
-      if (!userData.weight ||
-        !userData.height ||
-        !userData.goal ||
-        !userData.level ||
-        !userData.gender ||
-        !userData.age) {
-
-        return null;
-      } else {
-        userData['key'] = key;
-        return userData;
-      }
-    }
   }
 }
 
@@ -181,11 +113,31 @@ export function getWorkoutDays(workoutLength) {
 }
 
 export function createWorkoutByDay(details, muscles, days, exercises) {
-  const workoutByDay = [];
+  const muscleGroups = [
+    {
+      chest: 'chest/abs'
+    },
+    {
+      back: 'traps/middle_back/lats/lower_back'
+    },
+    {
+      arms: 'biceps/forearms/triceps'
+    },
+    {
+      shoulders: 'shoulders'
+    },
+    {
+      legs: 'quads/hamstrings/glutes/calves'
+    },
+    {
+      cardio: 'cardio'
+    }
+  ];
 
   for(let i = 0; i < days.length; i++) {
     const muscleGroupToTrain = muscles[i].split('/');
-
+    const workoutByDay = [];
+    console.log('muscleGroupToTrain', muscleGroupToTrain);
     muscleGroupToTrain.forEach(trainGroup => {
       muscleGroups.map(muscleGroup => {
         for (const group in muscleGroup) {
@@ -196,11 +148,7 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
                 musclesToFind.forEach(muscle => {
                   const exercise = findExercise(muscle, details, exercises);
                   if (exercise.length > 0) {
-                    console.log('is exercise an array???', exercise);
-                    exercise.push({
-                      'day': getDayNumber(days[i]),
-                      'workout_id': i
-                    });
+                    exercise['muscle_type'] = exercise[0].muscle.toLowerCase();
                     workoutByDay.push(exercise);
                   }
                 });
@@ -210,11 +158,86 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
         }
       });
     });
+
+    const workout = calculateWorkoutSize(workoutByDay, details);
+
+    if (workout.length > 0) {
+      const day = getDayNumber(days[i]);
+      const workout_id = `workout_day_${day}`;
+
+      firebase.database().ref('users/' + details.uid + '/workouts/').child(workout_id).set({
+        day: day,
+        exercises: workout
+      });
+    }
   }
 
-  console.log('Created workout ', workoutByDay);
-  return workoutByDay;
 }
+
+export function calculateWorkoutSize(workout, details) {
+  const exercisesPerWorkout = Math.floor(10 / workout.length);
+  const result = [];
+  const gain = {
+    beginner: {
+      sets: 2,
+      reps: 10
+    },
+    intermediate: {
+      sets: 2,
+      reps: 20
+    }
+  };
+
+  const loss = {
+    beginner: {
+      sets: 2,
+      reps: 8
+    },
+    intermediate: {
+      sets: 3,
+      reps: 8
+    }
+  };
+
+  workout.map(w => {
+    for (let i = 0; i < exercisesPerWorkout; i++) {
+      const exercise = w.getExercise();
+
+      if (exercise) {
+        if (details.level.toLowerCase() === 'beginner') {
+          if (details.goal === 'gain') {
+            exercise['sets_x_reps'] = gain.beginner.reps + 'x' + gain.beginner.sets;
+          } else {
+            exercise['sets_x_reps'] = loss.beginner.reps + 'x' + loss.beginner.sets;
+          }
+        } else {
+          if (details.goal === 'gain') {
+            exercise['sets_x_reps'] = gain.intermediate.reps + 'x' + gain.intermediate.sets;
+          } else {
+            exercise['sets_x_reps'] = loss.intermediate.reps + 'x' + loss.intermediate.sets;
+          }
+        }
+
+        removeExercise(w, exercise);
+        result.push(exercise);
+      }
+    }
+  });
+
+  return result;
+}
+
+function removeExercise(workout, exercise) {
+  const index = workout.indexOf(exercise);
+
+  if (index !== -1) {
+    workout.splice(index, 1);
+  }
+}
+
+Array.prototype.getExercise = function() {
+  return this[Math.floor(Math.random() * this.length)];
+};
 
 export function getDayNumber(day) {
   if (day === 'Monday') {
@@ -235,40 +258,87 @@ export function getDayNumber(day) {
 }
 
 export function findExercise(muscleToFind, details, exercises) {
-  //FIND EXERCISE BY SOME PROPERTY
   const result = exercises.filter((exercise) => {
     let result;
-    if (exercise.muscle.toLowerCase() === muscleToFind ) {
+    if (exercise.muscle.toLowerCase() === muscleToFind &&
+      exercise.type.toLowerCase() === 'strength' ||
+      exercise.type.toLowerCase() === muscleToFind) {
       if (exercise.level.toLowerCase() === details.level) {
         result = exercise.muscle.toLowerCase();
       }
     }
+
+    // if (exercise.type.toLowerCase() === muscleToFind) {
+    //   if (exercise.level.toLowerCase() === details.level) {
+    //     result = exercise.muscle.toLowerCase();
+    //   }
+    // }
+
     return result;
   });
 
   return result;
 }
 
-Array.prototype.randomExercise = function() {
-  return this[Math.floor(Math.random() * this.length)];
-};
-
 export function* fetchUserWorkout() {
   const state = yield select(state => state.auth);
+  const weekday = moment().isoWeekday();
 
   try {
-    const user = yield call(fire.database.read, 'users/' + state.uid);
-    let workout;
+    const workouts = yield call(fire.database.read, 'users/' + state.uid + '/workouts');
+    let exercises;
 
-    if (user) {
-      workout = yield call(fire.database.read, 'users/' + state.uid + '/workout');
-    }
-    if (workout.length > 0) {
-      yield put({ type: FETCH_USER_WORKOUT.SUCCESS, workout });
+    if (workouts) {
+      for (const w in workouts) {
+        const workout = workouts[w];
+        //TODO: USE REAL WEEKDAY
+        if (workout) {
+          if (1 === workout.day) {
+            exercises = workout.exercises;
+          }
+        }
+      }
+
+      yield put({ type: FETCH_USER_WORKOUT.SUCCESS, exercises });
     }
   } catch (e) {
-    console.log('Error while fetching user workout');
+    console.log('Error while fetching user workout', e);
   } finally {
     yield call(Navigation.home);
   }
+}
+
+export function getTodaysWorkout(action) {
+  const { workout } = action;
+  const weekday = moment().isoWeekday();
+  const todaysWorkout = [];
+  const workoutWithoutDays = [];
+
+  workout.map(userWorkouts => {
+    userWorkouts.map(w => {
+      //USE weekday instead of 4
+      if (4 === w.day) {
+        todaysWorkout.push(userWorkouts);
+      }
+    });
+  });
+
+  todaysWorkout.map(tw => {
+    tw.map(t => {
+      if (!t.day) {
+        workoutWithoutDays.push(tw);
+      }
+    });
+  });
+
+  calculateTodaysExercises(workoutWithoutDays);
+}
+
+export function calculateTodaysExercises(todaysWorkout) {
+  const arrayOfRandom = [];
+  todaysWorkout.map(tw => {
+
+    arrayOfRandom.push(tw.randomExercise());
+  });
+
 }

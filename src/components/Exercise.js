@@ -23,8 +23,7 @@ class ExerciseComponent extends Component {
   //  source={{require('./test.jpg')}} />
 
   render() {
-    console.log('image', this.props.image_start);
-    console.log('ALL PROPS', this.props);
+    // console.log('ALL PROPS ExerciseComponent', this.props);
     return (
       <View style={styles.container}>
         <Image

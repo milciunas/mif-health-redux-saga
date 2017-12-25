@@ -115,10 +115,8 @@ export function* fetchOrCreateWorkout() {
 
   if (uid) {
     const userDetails = yield call(fire.database.read, 'users/' + uid);
-    if (userDetails.workout) {
-      if (userDetails.workout.length > 0) {
-        yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
-      }
+    if (userDetails.workouts) {
+      yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
     } else {
       yield put({ type: CREATE_USER_WORKOUT.REQUESTED, details: userDetails });
     }

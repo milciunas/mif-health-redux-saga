@@ -46,7 +46,7 @@ class WelcomeScreen extends Component {
     // REMOVE HARDCODED DETAILS!!!!
     this.state = {
       form: {
-        email: 'test@test.lt',
+        email: 'test2@test.lt',
         password: 'testas1'
       }
     };
@@ -74,25 +74,27 @@ class WelcomeScreen extends Component {
           <View style={styles.title}>
             <Text style={styles.titleText}>{'MIF HEALTH'}</Text>
           </View>
-          <Form
-            type={User}
-            options={options}
-            value={this.state.form}
-            onChange={this.onChange} />
-          <View style={styles.loginBtn}>
+          <View style={styles.formContainer}>
+            <Form
+              type={User}
+              options={options}
+              value={this.state.form}
+              onChange={this.onChange} />
+            <View style={styles.loginBtn}>
+              <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={this.login}
+                underlayColor='#fff'>
+                <Text style={styles.loginText}>Login</Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               style={styles.loginScreenButton}
-              onPress={this.login}
+              onPress={this.navigateToRegister}
               underlayColor='#fff'>
-              <Text style={styles.loginText}>Login</Text>
+              <Text style={styles.loginText}>Register</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.loginScreenButton}
-            onPress={this.navigateToRegister}
-            underlayColor='#fff'>
-            <Text style={styles.loginText}>Register</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -114,6 +116,14 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'center',
+    padding: 20
+  },
+  formContainer: {
+    borderWidth: 1,
+    borderColor: 'rgba(8,8,8,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    borderRadius: 20,
+    margin: 10,
     padding: 20
   },
   loginBtn: {

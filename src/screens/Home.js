@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUserWorkout } from '../state/actions/authActions';
+import { getTodaysWorkout } from '../state/actions/workoutActions';
 import Exercises from './Exercises';
 
 class HomeScreen extends Component {
   static propTypes = {
-    user: PropTypes.object
+    exercises: PropTypes.array
   }
 
   render() {
-    console.log('What do we have in user state', this.props.user);
-    console.log('What do we have in user state', this.props.user.workout);
-
+    console.log('HOME props ', this.props);
     return (
       <View style={styles.screen}>
         <ScrollView contentContainerStyle={styles.container}>
-          <Exercises exercises={this.props.user.workout}/>
+          <Exercises exercises={this.props.exercises}/>
         </ScrollView>
       </View>
     );
@@ -25,11 +23,11 @@ class HomeScreen extends Component {
 }
 
 const actionsToProps = {
-  fetchUserWorkout
+  getTodaysWorkout
 };
 
 const mapStateToProps = state => ({
-  user: state.auth
+  exercises: state.auth.exercises
 });
 
 export default connect(mapStateToProps, actionsToProps)(HomeScreen);

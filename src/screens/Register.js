@@ -71,7 +71,6 @@ class RegisterScreen extends Component {
   }
 
   render() {
-    this.props.error='erroras with something';
     return (
       <View style={styles.screen}>
         <Header />

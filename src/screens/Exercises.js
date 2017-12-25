@@ -4,41 +4,36 @@ import { PropTypes } from 'prop-types';
 import ExerciseComponent from '../components/Exercise';
 import moment from 'moment';
 
-// const weekday = moment().weekday();
-const weekday = moment().day();
-
 class Exercises extends Component {
   static propTypes = {
     exercises: PropTypes.array
   }
 
   render() {
-    console.log('this.props.exercises', this.props.exercises);
+    console.log('EXERCISES props', this.props.exercises);
+    // console.log('this.props.exercises', this.props.exercises);
 
-    let exercisesWithDay;
-    const exercisesList = [];
+    // let exercisesWithDay;
+    // const exercisesList = [];
 
-    this.props.exercises.map(exercises => {
-      exercises.map(e => {
-        console.log('e', e);
-        console.log('e day', e.day);
-        console.log('weekday', weekday);
-        if (e.day && e.day === weekday) {
-          exercisesWithDay = exercises;
-        }
-      });
-    });
+    // this.props.exercises.map(exercises => {
+    //   exercises.map(e => {
+    //     if (e.day && e.day === 0) {
+    //       exercisesWithDay = exercises;
+    //     }
+    //   });
+    // });
 
-    if (exercisesWithDay) {
-      const exercisesCleaned = exercisesWithDay.map(e => {
-        if(e.id) {
-          exercisesList.push(e);
-        }
-      });
-      exercisesWithDay = exercisesCleaned;
-    }
+    // if (exercisesWithDay) {
+    //   const exercisesCleaned = exercisesWithDay.map(e => {
+    //     if(e.id) {
+    //       exercisesList.push(e);
+    //     }
+    //   });
+    //   exercisesWithDay = exercisesCleaned;
+    // }
 
-    console.log('Exercises', exercisesList);
+    // console.log('Exercises', exercisesList);
 
     const stuff = [];
     for (let i = 0; i < 10; i++) {
@@ -48,9 +43,9 @@ class Exercises extends Component {
     return (
       <View style={styles.screen}>
         {
-          exercisesList.length > 0 ?
+          this.props.exercises.length > 0 ?
             <FlatList
-              data={exercisesList}
+              data={this.props.exercises}
               renderItem={({ item }) =>
                 <ExerciseComponent
                   key={item.id}
