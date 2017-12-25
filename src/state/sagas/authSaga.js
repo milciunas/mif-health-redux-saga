@@ -63,6 +63,7 @@ export function* loginWithEmail(action) {
       }
     }
 
+    yield call(Navigation.home);
     return false;
   } catch (error) {
     console.log('Error in login with email and password: ', email, password, error);

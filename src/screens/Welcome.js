@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { loginWithEmail } from '../state/actions/authActions';
 import t from 'tcomb-form-native';
 import { Actions as Navigation } from 'react-native-router-flux';
-
 const Form = t.form.Form;
 
 const Email = t.refinement(t.String, email => {

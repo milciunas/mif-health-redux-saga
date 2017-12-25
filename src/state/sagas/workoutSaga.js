@@ -26,7 +26,7 @@ export function* createWorkout({ details }) {
   } catch (e) {
     console.log('Error while creating a workout in user profile', e);
   } finally {
-    yield call(Navigation.home);
+    // yield call(Navigation.home);
   }
 }
 
@@ -304,7 +304,7 @@ export function* fetchUserWorkout() {
   } catch (e) {
     console.log('Error while fetching user workout', e);
   } finally {
-    yield call(Navigation.home);
+    // yield call(Navigation.home);
   }
 }
 
