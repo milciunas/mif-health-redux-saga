@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { PropTypes } from 'prop-types';
 import ExerciseComponent from '../components/Exercise';
-import moment from 'moment';
 
 class Exercises extends Component {
   static propTypes = {
@@ -10,36 +9,6 @@ class Exercises extends Component {
   }
 
   render() {
-    console.log('EXERCISES props', this.props.exercises);
-    // console.log('this.props.exercises', this.props.exercises);
-
-    // let exercisesWithDay;
-    // const exercisesList = [];
-
-    // this.props.exercises.map(exercises => {
-    //   exercises.map(e => {
-    //     if (e.day && e.day === 0) {
-    //       exercisesWithDay = exercises;
-    //     }
-    //   });
-    // });
-
-    // if (exercisesWithDay) {
-    //   const exercisesCleaned = exercisesWithDay.map(e => {
-    //     if(e.id) {
-    //       exercisesList.push(e);
-    //     }
-    //   });
-    //   exercisesWithDay = exercisesCleaned;
-    // }
-
-    // console.log('Exercises', exercisesList);
-
-    const stuff = [];
-    for (let i = 0; i < 10; i++) {
-      stuff.push({ text: 'Training nr: ' + i, id: i });
-    }
-
     return (
       <View style={styles.screen}>
         {
