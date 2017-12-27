@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { loginWithEmail } from '../state/actions/authActions';
@@ -36,7 +36,8 @@ const options = {
 
 class WelcomeScreen extends Component {
   static propTypes = {
-    loginWithEmail: PropTypes.func.isRequired
+    loginWithEmail: PropTypes.func.isRequired,
+    loading: PropTypes.bool
   }
 
   constructor(props) {
@@ -67,6 +68,13 @@ class WelcomeScreen extends Component {
   }
 
   render() {
+    if (this.props.loading) {
+      return <ActivityIndicator
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        size='large'
+        color='#2196F3' />;
+    }
+
     return (
       <View style={styles.screen}>
         <View style={styles.container}>
@@ -101,6 +109,7 @@ class WelcomeScreen extends Component {
 }
 
 const mapStateToProps = state => ({
+  loading: state.auth.loading
 });
 
 const actionsToProps = {

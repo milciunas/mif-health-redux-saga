@@ -26,7 +26,8 @@ export function* createWorkout({ details }) {
   } catch (e) {
     console.log('Error while creating a workout in user profile', e);
   } finally {
-    // yield call(Navigation.home);
+    yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
+    yield call(Navigation.home);
   }
 }
 
@@ -137,7 +138,6 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
   for(let i = 0; i < days.length; i++) {
     const muscleGroupToTrain = muscles[i].split('/');
     const workoutByDay = [];
-    console.log('muscleGroupToTrain', muscleGroupToTrain);
     muscleGroupToTrain.forEach(trainGroup => {
       muscleGroups.map(muscleGroup => {
         for (const group in muscleGroup) {
@@ -171,7 +171,6 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
       });
     }
   }
-
 }
 
 export function calculateWorkoutSize(workout, details) {
@@ -267,13 +266,6 @@ export function findExercise(muscleToFind, details, exercises) {
         result = exercise.muscle.toLowerCase();
       }
     }
-
-    // if (exercise.type.toLowerCase() === muscleToFind) {
-    //   if (exercise.level.toLowerCase() === details.level) {
-    //     result = exercise.muscle.toLowerCase();
-    //   }
-    // }
-
     return result;
   });
 

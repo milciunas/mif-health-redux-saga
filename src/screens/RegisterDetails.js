@@ -95,7 +95,7 @@ class RegisterDetailsScreen extends Component {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{'Enter your details'}</Text>
         </View>
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps={'never'}>
           <Form
             type={User}
             options={options}

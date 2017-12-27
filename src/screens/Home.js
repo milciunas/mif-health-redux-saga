@@ -15,7 +15,10 @@ class HomeScreen extends Component {
     console.log('HOME props ', this.props);
     console.log('HOME props ', this.props.loading);
     if (this.props.loading) {
-      return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} size='large' color='#0000ff' />;
+      return <ActivityIndicator
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        size='large'
+        color='#2196F3' />;
     }
 
     return (

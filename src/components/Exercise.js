@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Image, Button, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 class ExerciseComponent extends Component {
   static propTypes = {
-    image_end: PropTypes.string,
     image_start: PropTypes.string,
-    level: PropTypes.string,
-    muscle: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string
+    name: PropTypes.string
   }
 
   componentWillReceiveProps(props) {
@@ -22,23 +19,24 @@ class ExerciseComponent extends Component {
   //
   //  source={{require('./test.jpg')}} />
 
+  openExerciseDetails = () => {
+    const details = this.props;
+    Navigation.exerciseDetails({ details });
+  }
+
   render() {
     // console.log('ALL PROPS ExerciseComponent', this.props);
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        onPress={this.openExerciseDetails}
+        style={styles.container}>
         <Image
           style={styles.image}
           source={{ uri: this.props.image_start }} />
         <View style={styles.textContainer}>
           <Text style={styles.text}>{this.props.name}</Text>
-          <TouchableOpacity
-            style={styles.loginScreenButton}
-            onPress={this.navigateToRegister}
-            underlayColor='#fff'>
-            <Text style={styles.loginText}>{'Done!'}</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -59,9 +57,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     margin: 20,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   text: {
+    flex: 1,
     textAlign: 'center',
     color: 'white',
     fontSize: 40
@@ -76,21 +76,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: -1
-  },
-  loginScreenButton: {
-    marginTop: 20,
-    marginLeft: 120,
-    marginRight: 120,
-    backgroundColor:'#2196F3',
-    borderRadius:20
-  },
-  loginText:{
-    color:'#fff',
-    backgroundColor: 'rgba(0,0,0,0)',
-    textAlign:'center',
-    paddingLeft : 10,
-    paddingRight : 10,
-    fontSize: 20,
-    fontWeight: '500'
   }
 });

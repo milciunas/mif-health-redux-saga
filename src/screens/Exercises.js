@@ -8,6 +8,8 @@ class Exercises extends Component {
     exercises: PropTypes.array
   }
 
+  _keyExtractor = (item) => item.id;
+
   render() {
     return (
       <View style={styles.screen}>
@@ -15,6 +17,7 @@ class Exercises extends Component {
           this.props.exercises.length > 0 ?
             <FlatList
               data={this.props.exercises}
+              keyExtractor={this._keyExtractor}
               renderItem={({ item }) =>
                 <ExerciseComponent
                   key={item.id}
