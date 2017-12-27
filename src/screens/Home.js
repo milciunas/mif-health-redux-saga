@@ -11,19 +11,37 @@ class HomeScreen extends Component {
     loading: PropTypes.bool
   }
 
+  constructor() {
+    super();
+
+    this.state = {
+      shouldRender: false
+    };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        shouldRender: true
+      });
+    }, 3000);
+  }
+
   render() {
     console.log('HOME props ', this.props);
     console.log('HOME props ', this.props.loading);
-    if (this.props.loading) {
+    if (this.props.loading && !this.state.shouldRender) {
       return <ActivityIndicator
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        style={styles.loadingIncidator}
         size='large'
         color='#2196F3' />;
     }
 
     return (
       <View style={styles.screen}>
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.container}>
           <Exercises exercises={this.props.exercises}/>
         </ScrollView>
       </View>
@@ -50,5 +68,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 10
+  },
+  loadingIncidator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

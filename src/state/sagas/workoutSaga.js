@@ -205,15 +205,15 @@ export function calculateWorkoutSize(workout, details) {
       if (exercise) {
         if (details.level.toLowerCase() === 'beginner') {
           if (details.goal === 'gain') {
-            exercise['sets_x_reps'] = gain.beginner.reps + 'x' + gain.beginner.sets;
+            exercise['sets_x_reps'] = gain.beginner.sets + 'x' + gain.beginner.reps;
           } else {
-            exercise['sets_x_reps'] = loss.beginner.reps + 'x' + loss.beginner.sets;
+            exercise['sets_x_reps'] = loss.beginner.sets + 'x' + loss.beginner.reps;
           }
         } else {
           if (details.goal === 'gain') {
-            exercise['sets_x_reps'] = gain.intermediate.reps + 'x' + gain.intermediate.sets;
+            exercise['sets_x_reps'] = gain.intermediate.sets + 'x' + gain.intermediate.reps;
           } else {
-            exercise['sets_x_reps'] = loss.intermediate.reps + 'x' + loss.intermediate.sets;
+            exercise['sets_x_reps'] = loss.intermediate.sets + 'x' + loss.intermediate.reps;
           }
         }
 

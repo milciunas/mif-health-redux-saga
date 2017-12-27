@@ -19,7 +19,7 @@ class ExerciseDetails extends Component {
   }
 
   render() {
-    const { image_end, image_start, muscle, name, sets_x_reps, type } = this.props.details;
+    const { image_end, image_start, muscle, name, sets_x_reps } = this.props.details;
 
     return (
       <View style={styles.screen}>
@@ -45,7 +45,7 @@ class ExerciseDetails extends Component {
           </View>
           <View style={styles.splitter} />
           <View style={styles.textContainer}>
-            <Text style={{ textAlign: 'center' }}>{'Sets x Repetitions: '}</Text>
+            <Text style={{ textAlign: 'center' }}>{'Sets and Repetitions: '}</Text>
             <Text style={{ fontWeight: '700' }}>{sets_x_reps}</Text>
           </View>
           <View style={styles.splitter} />
