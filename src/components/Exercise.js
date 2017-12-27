@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    flex: 1,
     textAlign: 'center',
     color: 'white',
     fontSize: 40

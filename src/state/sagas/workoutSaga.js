@@ -272,9 +272,12 @@ export function findExercise(muscleToFind, details, exercises) {
   return result;
 }
 
-export function* fetchUserWorkout() {
+export function* fetchUserWorkout(action) {
   const state = yield select(state => state.auth);
   const weekday = moment().isoWeekday();
+
+  console.log('day', action.day);
+  console.log('weekday', weekday);
 
   try {
     const workouts = yield call(fire.database.read, 'users/' + state.uid + '/workouts');
@@ -283,20 +286,28 @@ export function* fetchUserWorkout() {
     if (workouts) {
       for (const w in workouts) {
         const workout = workouts[w];
-        //TODO: USE REAL WEEKDAY
         if (workout) {
-          if (1 === workout.day) {
-            exercises = workout.exercises;
+          if (action.day) {
+            if (action.day === workout.day) {
+              console.log('wtf', workout.exercises);
+              exercises = workout.exercises;
+            }
+          } else {
+            if (weekday === workout.day) {
+              exercises = workout.exercises;
+            } else {
+              exercises = null;
+            }
           }
         }
       }
+
+      console.log('exercises', exercises);
 
       yield put({ type: FETCH_USER_WORKOUT.SUCCESS, exercises });
     }
   } catch (e) {
     console.log('Error while fetching user workout', e);
-  } finally {
-    // yield call(Navigation.home);
   }
 }
 

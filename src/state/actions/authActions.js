@@ -35,8 +35,9 @@ export const createUserDetails = (details) => ({
   details
 });
 
-export const fetchUserWorkout = () => ({
-  type: FETCH_USER_WORKOUT.REQUESTED
+export const fetchUserWorkout = (day) => ({
+  type: FETCH_USER_WORKOUT.REQUESTED,
+  day
 });
 
 export const createUserWorkout = (details) => ({

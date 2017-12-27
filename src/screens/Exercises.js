@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { PropTypes } from 'prop-types';
 import ExerciseComponent from '../components/Exercise';
 
 class Exercises extends Component {
   static propTypes = {
-    exercises: PropTypes.array
+    exercises: PropTypes.array,
+    loading: PropTypes.bool
   }
 
   _keyExtractor = (item) => item.id;
@@ -14,22 +15,29 @@ class Exercises extends Component {
     return (
       <View style={styles.screen}>
         {
-          this.props.exercises.length > 0 ?
-            <FlatList
-              data={this.props.exercises}
-              keyExtractor={this._keyExtractor}
-              renderItem={({ item }) =>
-                <ExerciseComponent
-                  key={item.id}
-                  {...item}
-                />
-              }
-            /> :
-            <View style={styles.emptyContainer}>
-              <View style={styles.boxContainer}>
-                <Text style={styles.emptyContainerText}>{'No exercises for today!'}</Text>
+          this.props.loading ?
+            <ActivityIndicator
+              animating={true}
+              size='large'
+              style={styles.loadingIncidator}
+              color='#2196F3'
+            />:
+            this.props. exercises && this.props.exercises.length > 0 ?
+              <FlatList
+                data={this.props.exercises}
+                keyExtractor={this._keyExtractor}
+                renderItem={({ item }) =>
+                  <ExerciseComponent
+                    key={item.id}
+                    {...item}
+                  />
+                }
+              /> :
+              <View style={styles.emptyContainer}>
+                <View style={styles.boxContainer}>
+                  <Text style={styles.emptyContainerText}>{'No exercises for today!'}</Text>
+                </View>
               </View>
-            </View>
         }
       </View>
     );
@@ -57,5 +65,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: 'rgba(8,8,8,0.6)'
+  },
+  loadingIncidator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
