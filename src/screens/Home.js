@@ -37,7 +37,7 @@ class HomeScreen extends Component {
       this.props.fetchUserWorkout(day);
     }
   }
-  
+
   render() {
     console.log('HOME props ', this.props);
     console.log('HOME props ', this.props.loading);
@@ -51,7 +51,7 @@ class HomeScreen extends Component {
         <View style={styles.screen}>
           <CalendarStrip
             style={{ height: 75 }}
-            calendarAnimation={{ type: 'sequence', duration: 30 }}
+            calendarAnimation={{ type: 'sequence', duration: 100 }}
             calendarHeaderStyle={{ color: 'white' }}
             calendarColor={'#2196F3'}
             dateNumberStyle={{ color: 'white' }}
@@ -64,7 +64,7 @@ class HomeScreen extends Component {
             iconContainer={{ flex: 0.1 }}
             daySelectionAnimation={{
               type: 'border',
-              duration: 200,
+              duration: 40,
               borderWidth: 1,
               borderHighlightColor: 'white'
             }}

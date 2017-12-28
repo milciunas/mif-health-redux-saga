@@ -14,18 +14,12 @@ class ExerciseComponent extends Component {
     this.setState(...props);
   }
 
-  //
-  //   RENDER DEFAULT VALUES IF NONE WAS PASSED
-  //
-  //  source={{require('./test.jpg')}} />
-
   openExerciseDetails = () => {
     const details = this.props;
     Navigation.exerciseDetails({ details });
   }
 
   render() {
-    // console.log('ALL PROPS ExerciseComponent', this.props);
     return (
       <TouchableOpacity
         onPress={this.openExerciseDetails}

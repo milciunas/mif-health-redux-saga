@@ -18,6 +18,18 @@ class ExerciseDetails extends Component {
     })
   }
 
+  constructor() {
+    super();
+
+    this.state = {
+      showWeightInformation: false
+    };
+  }
+
+  showWeightInformation = () => {
+    this.setState({ showWeightInformation: !this.state.showWeightInformation });
+  }
+
   render() {
     const { image_end, image_start, muscle, name, sets_x_reps } = this.props.details;
 
@@ -33,12 +45,27 @@ class ExerciseDetails extends Component {
             <Text style={styles.headerText}>{name}</Text>
           </View>
           <TouchableOpacity
-            onPress={() => Navigation.pop()}
+            onPress={this.showWeightInformation}
             style={styles.headerBackContainer}>
             <Text style={styles.headerBackIndicator}>{'Weight'}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {
+            !this.state.showWeightInformation ? null :
+              <View>
+                <View style={[ styles.textContainer, { marginTop: -10 } ]}>
+                  <Text style={{ textAlign: 'center', fontWeight: '700', fontSize: 18, padding: 20 }}>
+                    {'Use a weight that is heavy enough to tire the muscle significantly in specified sets and repepetitions combination'}
+                  </Text>
+                </View>
+                <View style={{
+                    borderBottomWidth: 1,
+                    borderColor: 'rgba(8,8,8,0.2)',
+                    marginBottom: 15
+                  }} />
+              </View>
+          }
           <View style={[ styles.textContainer, { marginTop: -10 } ]}>
             <Text style={{ textAlign: 'center' }}>{'Muscle to be trained: '}</Text>
             <Text style={{ fontWeight: '700' }}>{muscle}</Text>
