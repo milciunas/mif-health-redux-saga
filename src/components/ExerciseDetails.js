@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5
+    padding: 5,
+    minHeight: 50
   },
   headerBackContainer: {
     marginLeft: 10,
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   },
   headerBackIndicator: {
     fontWeight: '600',
+    fontSize: 18,
     color: '#2196F3'
   },
   headerText: {

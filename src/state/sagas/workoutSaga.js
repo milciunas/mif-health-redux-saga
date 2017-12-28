@@ -1,19 +1,16 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   FETCH_USER_WORKOUT,
-  CREATE_USER_WORKOUT,
-  GET_TODAYS_WORKOUT
+  CREATE_USER_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
-import * as _ from 'lodash';
 import * as firebase from 'firebase';
 import moment from 'moment';
 
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
   yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
-  yield takeLatest(GET_TODAYS_WORKOUT.REQUESTED, getTodaysWorkout);
 }
 
 export function* createWorkout({ details }) {
@@ -164,9 +161,11 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
     if (workout.length > 0) {
       const day = getDayNumber(days[i]);
       const workout_id = `workout_day_${day}`;
+      const todaysDate = moment().format('YYYY-M-D');
 
       firebase.database().ref('users/' + details.uid + '/workouts/').child(workout_id).set({
         day: day,
+        created: todaysDate,
         exercises: workout
       });
     }
@@ -276,9 +275,6 @@ export function* fetchUserWorkout(action) {
   const state = yield select(state => state.auth);
   const weekday = moment().isoWeekday();
 
-  console.log('day', action.day);
-  console.log('weekday', weekday);
-
   try {
     const workouts = yield call(fire.database.read, 'users/' + state.uid + '/workouts');
     let exercises;
@@ -289,7 +285,6 @@ export function* fetchUserWorkout(action) {
         if (workout) {
           if (action.day) {
             if (action.day === workout.day) {
-              console.log('wtf', workout.exercises);
               exercises = workout.exercises;
             }
           } else {
@@ -302,46 +297,9 @@ export function* fetchUserWorkout(action) {
         }
       }
 
-      console.log('exercises', exercises);
-
       yield put({ type: FETCH_USER_WORKOUT.SUCCESS, exercises });
     }
   } catch (e) {
     console.log('Error while fetching user workout', e);
   }
-}
-
-export function getTodaysWorkout(action) {
-  const { workout } = action;
-  const weekday = moment().isoWeekday();
-  const todaysWorkout = [];
-  const workoutWithoutDays = [];
-
-  workout.map(userWorkouts => {
-    userWorkouts.map(w => {
-      //USE weekday instead of 4
-      if (4 === w.day) {
-        todaysWorkout.push(userWorkouts);
-      }
-    });
-  });
-
-  todaysWorkout.map(tw => {
-    tw.map(t => {
-      if (!t.day) {
-        workoutWithoutDays.push(tw);
-      }
-    });
-  });
-
-  calculateTodaysExercises(workoutWithoutDays);
-}
-
-export function calculateTodaysExercises(todaysWorkout) {
-  const arrayOfRandom = [];
-  todaysWorkout.map(tw => {
-
-    arrayOfRandom.push(tw.randomExercise());
-  });
-
 }

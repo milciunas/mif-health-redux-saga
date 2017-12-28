@@ -21,7 +21,7 @@ class Exercises extends Component {
               size='large'
               style={styles.loadingIncidator}
               color='#2196F3'
-            />:
+            /> :
             this.props. exercises && this.props.exercises.length > 0 ?
               <FlatList
                 data={this.props.exercises}

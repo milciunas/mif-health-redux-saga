@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Text, View, StyleSheet, PixelRatio } from 'react-native';
 import { Router, Scene, Stack } from 'react-native-router-flux';
+import { Ionicons } from '@expo/vector-icons';
 
 import WelcomeScreen from '../screens/Welcome';
 import RegisterScreen from '../screens/Register';
@@ -7,15 +9,23 @@ import HomeScreen from '../screens/Home';
 import RegisterDetailsScreen from '../screens/RegisterDetails';
 import RegisterDaysScreen from '../screens/RegisterDays';
 import ExerciseDetails from '../components/ExerciseDetails';
+import Profile from '../screens/Profile';
+
+const TabIcon = ({ focused, iconName }) => {
+  return (
+    <Ionicons name={focused ? iconName : iconName + '-outline'} size={32} color='#2196F3' />
+  );
+};
 
 export default class Navigation extends Component {
   render() {
     return (
       <Router>
-        <Stack key='root' hideNavBar={true}>
+        <Stack key='root' hideNavBar>
           <Scene
             key='welcome'
-            component={WelcomeScreen} />
+            component={WelcomeScreen}
+            initial />
           <Scene
             key='register'
             component={RegisterScreen} />
@@ -27,8 +37,28 @@ export default class Navigation extends Component {
             component={RegisterDaysScreen} />
           <Scene
             key='home'
-            component={HomeScreen}
-            type='reset' />
+            tabs
+            tabBarStyle={styles.tabBar}
+            default='tab1'
+            showIcon
+            tabBarPosition='bottom'
+            hideNavBar
+            showLabel={false}
+            initial>
+            <Scene key='tab1'
+              iconName='ios-home'
+              icon={TabIcon}
+              component={HomeScreen}
+              hideNavBar
+            />
+            <Scene key='tab2'
+              iconName='ios-contact'
+              icon={TabIcon}
+              component={Profile}
+              hideNavBar
+              initial
+            />
+          </Scene>
           <Scene
             key='exerciseDetails'
             component={ExerciseDetails} />
@@ -37,3 +67,12 @@ export default class Navigation extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    borderTopColor: 'darkgrey',
+    borderTopWidth: 1 / PixelRatio.get(),
+    backgroundColor: 'ghostwhite',
+    opacity: 0.98
+  }
+});
