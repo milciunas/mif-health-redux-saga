@@ -37,7 +37,7 @@ class HomeScreen extends Component {
       this.props.fetchUserWorkout(day);
     }
   }
-
+  
   render() {
     console.log('HOME props ', this.props);
     console.log('HOME props ', this.props.loading);
@@ -50,15 +50,26 @@ class HomeScreen extends Component {
       return (
         <View style={styles.screen}>
           <CalendarStrip
+            style={{ height: 75 }}
             calendarAnimation={{ type: 'sequence', duration: 30 }}
-            daySelectionAnimation={{
-              type: 'background',
-              duration: 200,
-              highlightColor: 'rgba(255,255,255,0.2)'
-            }}
-            style={styles.calendarStrip}
+            calendarHeaderStyle={{ color: 'white' }}
             calendarColor={'#2196F3'}
-            onDateSelected={this.dateSelected} />
+            dateNumberStyle={{ color: 'white' }}
+            dateNameStyle={{ color: 'white' }}
+            highlightDateNumberStyle={{ color: 'white' }}
+            highlightDateNameStyle={{ color: 'white' }}
+            disabledDateNameStyle={{ color: 'black' }}
+            disabledDateNumberStyle={{ color: 'black' }}
+            maxDayComponentSize={48}
+            iconContainer={{ flex: 0.1 }}
+            daySelectionAnimation={{
+              type: 'border',
+              duration: 200,
+              borderWidth: 1,
+              borderHighlightColor: 'white'
+            }}
+            onDateSelected={this.dateSelected}
+          />
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.container}>

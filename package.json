@@ -28,7 +28,8 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
     "redux-saga-firebase": "^0.7.1",
-    "tcomb-form-native": "^0.6.11"
+    "tcomb-form-native": "^0.6.11",
+    "tcomb-validation": "^3.4.1"
   },
   "devDependencies": {
     "babel": "^6.23.0",
