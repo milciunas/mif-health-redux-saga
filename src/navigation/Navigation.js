@@ -41,22 +41,22 @@ export default class Navigation extends Component {
             tabBarStyle={styles.tabBar}
             default='tab1'
             showIcon
+            type='reset'
             tabBarPosition='bottom'
             hideNavBar
-            showLabel={false}
-            initial>
+            showLabel={false}>
             <Scene key='tab1'
               iconName='ios-home'
               icon={TabIcon}
               component={HomeScreen}
               hideNavBar
+              initial
             />
             <Scene key='tab2'
               iconName='ios-contact'
               icon={TabIcon}
               component={Profile}
               hideNavBar
-              initial
             />
           </Scene>
           <Scene

@@ -148,7 +148,7 @@ class RegisterDetailsScreen extends Component {
         this.setState({ error: validationResult });
       } else {
         this.setState({ error: null });
-      // this.props.createUserDetails(this.state.form);
+        this.props.createUserDetails(this.state.form);
       }
     }
   }
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     backgroundColor:'#2196F3',
-    borderRadius:0
+    borderRadius:5
   },
   text:{
     color:'#fff',
