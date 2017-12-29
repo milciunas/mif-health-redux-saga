@@ -25,6 +25,7 @@ export default class Navigation extends Component {
           <Scene
             key='welcome'
             component={WelcomeScreen}
+            type='reset'
             initial />
           <Scene
             key='register'

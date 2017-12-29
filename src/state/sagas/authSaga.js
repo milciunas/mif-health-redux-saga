@@ -72,7 +72,7 @@ export function* loginWithEmail(action) {
 
 export function createUserInDb(uid, email) {
   try {
-    firebase.database().ref('users/' + uid).set({ uid, email });
+    firebase.database().ref('users/' + uid).set({ uid, email, type: 'user' });
   } catch (e) {
     console.log('Cannot set new user in database', e);
   }
@@ -89,7 +89,6 @@ export function* createUserDetails(action) {
     console.log('Error working with user details', e);
   } finally {
     yield call(fetchOrCreateWorkout);
-    // yield call(Navigation.home);
   }
 }
 
