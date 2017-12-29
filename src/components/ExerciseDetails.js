@@ -14,7 +14,8 @@ class ExerciseDetails extends Component {
       muscle: PropTypes.string,
       name: PropTypes.string,
       sets_x_reps: PropTypes.string,
-      type: PropTypes.string
+      type: PropTypes.string,
+      duration: PropTypes.string
     })
   }
 
@@ -31,7 +32,7 @@ class ExerciseDetails extends Component {
   }
 
   render() {
-    const { image_end, image_start, muscle, name, sets_x_reps } = this.props.details;
+    const { image_end, image_start, muscle, name, sets_x_reps, duration } = this.props.details;
 
     return (
       <View style={styles.screen}>
@@ -71,10 +72,17 @@ class ExerciseDetails extends Component {
             <Text style={{ fontWeight: '700' }}>{muscle}</Text>
           </View>
           <View style={styles.splitter} />
-          <View style={styles.textContainer}>
-            <Text style={{ textAlign: 'center' }}>{'Sets and Repetitions: '}</Text>
-            <Text style={{ fontWeight: '700' }}>{sets_x_reps}</Text>
-          </View>
+          {
+            !sets_x_reps ?
+              <View style={styles.textContainer}>
+                <Text style={{ textAlign: 'center' }}>{'Duration: '}</Text>
+                <Text style={{ fontWeight: '700' }}>{duration}</Text>
+              </View> :
+              <View style={styles.textContainer}>
+                <Text style={{ textAlign: 'center' }}>{'Sets and Repetitions: '}</Text>
+                <Text style={{ fontWeight: '700' }}>{sets_x_reps}</Text>
+              </View>
+          }
           <View style={styles.splitter} />
           <View style={{ margin: 10 }}>
             <Text style={styles.imageText}>{'Starting position'}</Text>

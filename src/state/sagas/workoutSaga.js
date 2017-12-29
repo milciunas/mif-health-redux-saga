@@ -19,11 +19,14 @@ export function* createWorkout({ details }) {
   const exercises = yield call(fire.database.read, 'exercises');
 
   try {
-    yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
+    const response = yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
+
+    if (response) {
+      yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
+    }
   } catch (e) {
     console.log('Error while creating a workout in user profile', e);
   } finally {
-    yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
     yield call(Navigation.home);
   }
 }
@@ -42,22 +45,22 @@ export function getWorkoutMuscleGroups(details) {
       } else {
         return [
           'legs/back/chest',
-          'arms/shoulders/cardio'
+          'cardio/arms/shoulders'
         ];
       }
     } else {
       if (age >= 16 && age <= 50) {
         return [
           'chest/arms',
-          'legs/cardio',
+          'cardio/legs',
           'back/arms',
-          'shoulders/cardio'
+          'cardio/shoulders'
         ];
       } else {
         return [
           'legs/back/chest',
-          'arms/shoulders/cardio',
-          'legs/back/chest/cardio'
+          'cardio/arms/shoulders',
+          'cardio/legs/back/chest'
         ];
       }
     }
@@ -65,7 +68,7 @@ export function getWorkoutMuscleGroups(details) {
     if (level === 'beginner') {
       if (age >= 16 && age <= 50) {
         return [
-          'chest/cardio',
+          'cardio/chest',
           'legs',
           'back/arms',
           'cardio'
@@ -73,7 +76,7 @@ export function getWorkoutMuscleGroups(details) {
       } else {
         return [
           'legs/back/chest',
-          'shoulders/arms/cardio',
+          'cardio/shoulders/arms',
           'legs/back/chest',
           'cardio'
         ];
@@ -82,14 +85,14 @@ export function getWorkoutMuscleGroups(details) {
       if (age >= 16 && age <= 50) {
         return [
           'chest/shoulders',
-          'legs/cardio',
+          'cardio/legs',
           'back/arms',
           'cardio'
         ];
       } else {
         return [
           'legs/back/chest',
-          'shoulders/arms/cardio',
+          'cardio/shoulders/arms',
           'legs/back/chest',
           'cardio'
         ];
@@ -170,6 +173,7 @@ export function createWorkoutByDay(details, muscles, days, exercises) {
       });
     }
   }
+  return true;
 }
 
 export function calculateWorkoutSize(workout, details) {
@@ -198,26 +202,41 @@ export function calculateWorkoutSize(workout, details) {
   };
 
   workout.map(w => {
-    for (let i = 0; i < exercisesPerWorkout; i++) {
+    if (w[0].type === 'Cardio') {
       const exercise = w.getExercise();
 
       if (exercise) {
-        if (details.level.toLowerCase() === 'beginner') {
-          if (details.goal === 'gain') {
-            exercise['sets_x_reps'] = gain.beginner.sets + 'x' + gain.beginner.reps;
-          } else {
-            exercise['sets_x_reps'] = loss.beginner.sets + 'x' + loss.beginner.reps;
-          }
+        if (details.goal === 'gain') {
+          exercise['duration'] = '10min.';
         } else {
-          if (details.goal === 'gain') {
-            exercise['sets_x_reps'] = gain.intermediate.sets + 'x' + gain.intermediate.reps;
-          } else {
-            exercise['sets_x_reps'] = loss.intermediate.sets + 'x' + loss.intermediate.reps;
-          }
+          exercise['duration'] = '20min.';
         }
 
         removeExercise(w, exercise);
         result.push(exercise);
+      }
+    } else {
+      for (let i = 0; i < exercisesPerWorkout; i++) {
+        const exercise = w.getExercise();
+
+        if (exercise) {
+          if (details.level.toLowerCase() === 'beginner') {
+            if (details.goal === 'gain') {
+              exercise['sets_x_reps'] = gain.beginner.sets + 'x' + gain.beginner.reps;
+            } else {
+              exercise['sets_x_reps'] = loss.beginner.sets + 'x' + loss.beginner.reps;
+            }
+          } else {
+            if (details.goal === 'gain') {
+              exercise['sets_x_reps'] = gain.intermediate.sets + 'x' + gain.intermediate.reps;
+            } else {
+              exercise['sets_x_reps'] = loss.intermediate.sets + 'x' + loss.intermediate.reps;
+            }
+          }
+
+          removeExercise(w, exercise);
+          result.push(exercise);
+        }
       }
     }
   });
