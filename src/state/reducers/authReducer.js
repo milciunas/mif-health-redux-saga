@@ -24,7 +24,6 @@ function setRegistrationError(state, action) {
 }
 
 function setLoading(state) {
-  console.log('loading is true');
   return state.set('loading', true);
 }
 

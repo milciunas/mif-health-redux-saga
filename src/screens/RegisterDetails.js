@@ -135,15 +135,8 @@ class RegisterDetailsScreen extends Component {
   }
 
   signUpEmailDetails = () => {
-    const ageValidation = (age) => {
-      return age >= 1 || age <= 100;
-    };
-
-    const ageValid = t.refinement(t.Number, ageValidation);
-
     if (this.state.form) {
       const validationResult = this.formValidation(this.state.form);
-      console.log('validation result', validationResult);
       if (validationResult) {
         this.setState({ error: validationResult });
       } else {
