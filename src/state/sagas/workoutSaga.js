@@ -2,7 +2,8 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   FETCH_USER_WORKOUT,
   CREATE_USER_WORKOUT,
-  REGENERATE_WORKOUT
+  REGENERATE_WORKOUT,
+  CREATE_EXERCISE
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
@@ -13,6 +14,7 @@ export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
   yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
   yield takeLatest(REGENERATE_WORKOUT.REQUESTED, regenerateWorkout);
+  yield takeLatest(CREATE_EXERCISE.REQUESTED, createExercise);
 }
 
 export function* createWorkout({ details }) {
@@ -326,5 +328,29 @@ export function* fetchUserWorkout(action) {
 }
 
 export function* regenerateWorkout() {
-  yield console.log('regenerate workouts');
+  const state = yield select(state => state.auth);
+
+  try {
+    const userDetails = yield call(fire.database.read, 'users/' + state.uid);
+
+    yield call(createWorkout, { details: userDetails });
+  } catch (e) {
+    console.log('error while regenerating workout', e);
+  }
+}
+
+export function* createExercise(action) {
+  const state = yield select(state => state.auth);
+  let id;
+
+  // const query = firebase.database().ref('exercises/').limitToLast(1);
+  // const ids = query.once('value').then((snap) => {
+  //   const item = snap.val();
+  //   for (const itemid in item) {
+  //     id = Number(itemid) + 1;
+  //     return id;
+  //   }
+  // });
+
+  // console.log('id', ids);
 }

@@ -4,7 +4,8 @@ import {
   CREATE_USER_DETAILS,
   FETCH_USER_WORKOUT,
   CREATE_USER_WORKOUT,
-  REGENERATE_WORKOUT
+  REGENERATE_WORKOUT,
+  CREATE_EXERCISE
 } from './actionTypes';
 
 export const storeUserWorkout = (workout) => ({
@@ -48,4 +49,9 @@ export const createUserWorkout = (details) => ({
 
 export const regenerateWorkout = () => ({
   type: REGENERATE_WORKOUT.REQUESTED
+});
+
+export const createExercise = (exercise) => ({
+  type: CREATE_EXERCISE.REQUESTED,
+  exercise
 });

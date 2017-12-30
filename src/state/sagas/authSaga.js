@@ -78,7 +78,7 @@ export function createUserInDb(uid, email) {
 }
 
 export function* createUserDetails(action) {
-  const { height, weight, gender, level, goal, age, activity } = action.details;
+  const { height, weight, gender, level, goal, age, activity, type } = action.details;
 
   // KNYGA, Dellova, et al. ABC’s of Nutrition and Diet Therapy. 2006
   const bmi = calculateBmi(height, weight);
@@ -89,7 +89,8 @@ export function* createUserDetails(action) {
   const details = {
     bmi,
     idealWeight,
-    calories
+    calories,
+    type
   };
 
   try {
@@ -149,8 +150,6 @@ function calculateCalories(heightString, weightString, age, gender, activity) {
   // FORMULA:
   // MAN 	BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5
   // WOMAN BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161
-  console.log('activity ', activity);
-
   const height = Number(heightString);
   const weight = Number(weightString);
   let bmr;
@@ -161,7 +160,6 @@ function calculateCalories(heightString, weightString, age, gender, activity) {
     bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
   }
 
-  console.log('bmr', bmr);
 
   switch (activity) {
     case 'no':
@@ -202,7 +200,8 @@ export function* fetchOrCreateWorkout() {
       const details = {
         bmi: userDetails.bmi,
         calories: userDetails.calories,
-        idealWeight: userDetails.idealWeight
+        idealWeight: userDetails.idealWeight,
+        type: userDetails.type
       };
 
       yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });

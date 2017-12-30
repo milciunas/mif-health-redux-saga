@@ -10,6 +10,7 @@ import RegisterDetailsScreen from '../screens/RegisterDetails';
 import RegisterDaysScreen from '../screens/RegisterDays';
 import ExerciseDetails from '../components/ExerciseDetails';
 import Profile from '../screens/Profile';
+import CreateExercise from '../screens/CreateExercise';
 
 const TabIcon = ({ focused, iconName }) => {
   return (
@@ -63,6 +64,9 @@ export default class Navigation extends Component {
           <Scene
             key='exerciseDetails'
             component={ExerciseDetails} />
+          <Scene
+            key='createExercise'
+            component={CreateExercise} />
         </Stack>
       </Router>
     );
