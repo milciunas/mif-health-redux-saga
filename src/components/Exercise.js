@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Actions as Navigation } from 'react-native-router-flux';
 
@@ -35,7 +34,7 @@ class ExerciseComponent extends Component {
   }
 }
 
-export default connect(null, null)(ExerciseComponent);
+export default ExerciseComponent;
 
 const styles = StyleSheet.create({
   container: {

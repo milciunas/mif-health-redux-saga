@@ -1,7 +1,8 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   FETCH_USER_WORKOUT,
-  CREATE_USER_WORKOUT
+  CREATE_USER_WORKOUT,
+  REGENERATE_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
@@ -11,6 +12,7 @@ import moment from 'moment';
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
   yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
+  yield takeLatest(REGENERATE_WORKOUT.REQUESTED, regenerateWorkout);
 }
 
 export function* createWorkout({ details }) {
@@ -321,4 +323,8 @@ export function* fetchUserWorkout(action) {
   } catch (e) {
     console.log('Error while fetching user workout', e);
   }
+}
+
+export function* regenerateWorkout() {
+  yield console.log('regenerate workouts');
 }

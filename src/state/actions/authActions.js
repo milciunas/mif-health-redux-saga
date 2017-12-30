@@ -3,7 +3,8 @@ import {
   LOGIN_WITH_EMAIL,
   CREATE_USER_DETAILS,
   FETCH_USER_WORKOUT,
-  CREATE_USER_WORKOUT
+  CREATE_USER_WORKOUT,
+  REGENERATE_WORKOUT
 } from './actionTypes';
 
 export const storeUserWorkout = (workout) => ({
@@ -43,4 +44,8 @@ export const fetchUserWorkout = (day) => ({
 export const createUserWorkout = (details) => ({
   type: CREATE_USER_WORKOUT.REQUESTED,
   details
+});
+
+export const regenerateWorkout = () => ({
+  type: REGENERATE_WORKOUT.REQUESTED
 });

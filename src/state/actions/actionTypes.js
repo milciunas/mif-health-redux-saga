@@ -19,3 +19,4 @@ export const CREATE_USER_DETAILS = createAsyncActionType('CREATE_USER_DETAILS');
 export const FETCH_USER_WORKOUT = createAsyncActionType('FETCH_USER_WORKOUT');
 export const CREATE_USER_WORKOUT = createAsyncActionType('CREATE_USER_WORKOUT');
 export const GET_TODAYS_WORKOUT = createAsyncActionType('GET_TODAYS_WORKOUT');
+export const REGENERATE_WORKOUT = createAsyncActionType('REGENERATE_WORKOUT');

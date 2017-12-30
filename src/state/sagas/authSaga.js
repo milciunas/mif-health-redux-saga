@@ -8,7 +8,6 @@ import {
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
-import * as _ from 'lodash';
 import * as firebase from 'firebase';
 
 export function* watchSignUpEmailSaga() {
@@ -79,16 +78,100 @@ export function createUserInDb(uid, email) {
 }
 
 export function* createUserDetails(action) {
-  const { height, weight, gender, level, goal, age } = action.details;
+  const { height, weight, gender, level, goal, age, activity } = action.details;
+
+  // KNYGA, Dellova, et al. ABC’s of Nutrition and Diet Therapy. 2006
+  const bmi = calculateBmi(height, weight);
+  const idealWeight = calculateIdealWeight(height, gender);
+  const calories = calculateCalories(height, weight, age, gender, activity);
   const state = yield select(state => state.auth);
+
+  const details = {
+    bmi,
+    idealWeight,
+    calories
+  };
+
   try {
     firebase.database().ref('users/' + state.uid).update({
-      height, weight, gender, level, goal, age
+      height, weight, gender, level, activity, goal, age, bmi, idealWeight, calories
     });
+
+    yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
   } catch (e) {
     console.log('Error working with user details', e);
   } finally {
     yield call(fetchOrCreateWorkout);
+  }
+}
+
+function calculateBmi(heightString, weightString) {
+  const height = Number(heightString) / 100;
+  const weight = Number(weightString);
+
+  let bmi = weight / Math.pow(height, 2);
+  bmi = parseFloat(bmi).toFixed(1);
+
+  if (bmi < 18.5) {
+    return bmi + ' - underweight';
+  } else if (bmi >= 18.5 && bmi <=24.9) {
+    return bmi + ' - normal';
+  } else if (bmi >= 25 && bmi <= 29.9) {
+    return bmi + ' - overweight';
+  } else {
+    return bmi + ' - obese';
+  }
+}
+
+function calculateIdealWeight(heightString, gender) {
+  // FORMULA
+  // Men: Ideal Body Weight (kg) = [Height (cm) - 100] - ([Height (cm) - 100] x 10%)
+  // Women: Ideal Body Weight (kg) = [Height (cm) - 100] - ([Height (cm) - 100] x 15%)
+
+  const height = Number(heightString);
+  let idealWeight;
+
+  if (gender === 'male') {
+    idealWeight = (height - 100) - (percentage((height - 100), 10));
+  } else {
+    idealWeight = (height - 100) - (percentage((height - 100), 15));
+  }
+
+  return parseFloat(idealWeight).toFixed(0) + ' kg';
+}
+
+function percentage(num, per)
+{
+  return (num / 100) * per;
+}
+
+function calculateCalories(heightString, weightString, age, gender, activity) {
+  // FORMULA:
+  // MAN 	BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5
+  // WOMAN BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161
+  console.log('activity ', activity);
+
+  const height = Number(heightString);
+  const weight = Number(weightString);
+  let bmr;
+
+  if (gender === 'male') {
+    bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+  } else {
+    bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+  }
+
+  console.log('bmr', bmr);
+
+  switch (activity) {
+    case 'no':
+      return parseFloat(bmr * 1.2).toFixed(0);
+    case 'light':
+      return parseFloat(bmr * 1.375).toFixed(0);
+    case 'moderate':
+      return parseFloat(bmr * 1.55).toFixed(0);
+    case 'heavy':
+      return parseFloat(bmr * 1.725).toFixed(0);
   }
 }
 
@@ -116,6 +199,13 @@ export function* fetchOrCreateWorkout() {
   if (uid) {
     const userDetails = yield call(fire.database.read, 'users/' + uid);
     if (userDetails.workouts) {
+      const details = {
+        bmi: userDetails.bmi,
+        calories: userDetails.calories,
+        idealWeight: userDetails.idealWeight
+      };
+
+      yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
       yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
     } else {
       yield put({ type: CREATE_USER_WORKOUT.REQUESTED, details: userDetails });

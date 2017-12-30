@@ -11,7 +11,7 @@ const Form = t.form.Form;
 
 const Gender = t.enums({
   male: 'Male',
-  fmale: 'Female'
+  female: 'Female'
 });
 
 const level = t.enums({
@@ -24,17 +24,29 @@ const goal = t.enums({
   gain: 'Weight gain'
 }, 'Goal');
 
+const activity = t.enums({
+  no: 'Little to no exercise',
+  light: 'Light exercise (1–3 days per week)',
+  moderate: 'Moderate exercise (3–5 days per week)',
+  heavy: 'Heavy exercise (6–7 days per week)'
+});
+
 const User = t.struct({
   weight: t.Number,
   height: t.Number,
   age: t.Number,
   gender: Gender,
   level: level,
-  goal: goal
+  goal: goal,
+  activity: activity
 });
 
 const options = {
   fields: {
+    activity: {
+      label: 'Activity level',
+      nullOption: false
+    },
     gender: {
       label: 'Gender',
       nullOption: false
@@ -80,7 +92,8 @@ class RegisterDetailsScreen extends Component {
         height: '',
         gender: 'male',
         level: 'beginner',
-        goal: 'loss'
+        goal: 'loss',
+        activity: 'no'
       },
       error: null
     };
