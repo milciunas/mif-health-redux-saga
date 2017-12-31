@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';

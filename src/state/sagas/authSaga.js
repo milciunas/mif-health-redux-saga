@@ -100,7 +100,7 @@ export function* createUserDetails(action) {
 
     yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
   } catch (e) {
-    console.log('Error working with user details', e);
+    console.log('Error creating user details', e);
   } finally {
     yield call(fetchOrCreateWorkout);
   }

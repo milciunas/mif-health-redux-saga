@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
 import { createExercise } from '../state/actions/authActions';
 import AutoScroll from '../components/AutoScroll';
+import { validate } from 'tcomb-validation';
 
 const Form = t.form.Form;
 
@@ -84,6 +85,7 @@ const options = {
     image_end: {
       label: 'Finishing position image',
       placeholder: 'Use https link!',
+      autoCapitalize: 'none',
       autoCorrect: false
     },
     type: {
@@ -125,12 +127,84 @@ class CreateExercise extends Component {
     };
   }
 
+  validation = (type, getValidationErrorMessage, name) => {
+    const subtype = t.refinement(type, (x) => {
+      return !t.String.is(getValidationErrorMessage(x));
+    }, name);
+
+    subtype.getValidationErrorMessage = getValidationErrorMessage;
+    return subtype;
+  }
+
+  formValidation = (form) => {
+    const name = form.name;
+    const image_start = form.image_start;
+    const image_end = form.image_end;
+
+    if (!name) {
+      return 'Please enter exercise title!';
+    }
+    if (!image_start) {
+      return 'Please enter starting image link!';
+    }
+    if (!image_end) {
+      return 'Please enter finishing image link!';
+    }
+
+
+    const validName = this.validation(t.String, (s) => {
+      if (s.length > 30) {
+        return 'Exercise title should be shorter than 30 symbols!';
+      } else if (s.length < 5) {
+        return 'Exercise title should be longer than 4 symbols!';
+      }
+    });
+
+    if (validate(name, validName).errors.length > 0) {
+      return validate(name, validName).firstError().message;
+    }
+
+    const validStartingImage = this.validation(t.String, (s) => {
+      if (!s.includes('https')) {
+        return 'Starting image should have https link!';
+      } else if (s.length < 10) {
+        return 'Starting image link is too short!';
+      }
+    });
+
+    if (validate(image_start, validStartingImage).errors.length > 0) {
+      return validate(image_start, validStartingImage).firstError().message;
+    }
+
+    const validFinishingImage = this.validation(t.String, (s) => {
+      if (!s.includes('https')) {
+        return 'Finishing image should have https link!';
+      } else if (s.length < 10) {
+        return 'Finishing image link is too short!';
+      }
+    });
+
+    if (validate(image_end, validFinishingImage).errors.length > 0) {
+      return validate(image_end, validFinishingImage).firstError().message;
+    }
+
+    return false;
+  }
+
   onChange = (form) => {
     this.setState({ form });
   }
 
   createExercise = () => {
-    this.props.createExercise(this.state.form);
+    if (this.state.form) {
+      const validationResult = this.formValidation(this.state.form);
+      if (validationResult) {
+        this.setState({ error: validationResult });
+      } else {
+        this.setState({ error: null });
+        this.props.createExercise(this.state.form);
+      }
+    }
   }
 
   render() {

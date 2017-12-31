@@ -9,6 +9,7 @@ import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 import * as firebase from 'firebase';
 import moment from 'moment';
+import { each } from '@firebase/database/dist/esm/src/core/util/util';
 
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
@@ -340,17 +341,31 @@ export function* regenerateWorkout() {
 }
 
 export function* createExercise(action) {
-  const state = yield select(state => state.auth);
-  let id;
+  try {
+    const lastExercise = yield call(
+      fire.database.read,
+      firebase.database().ref('exercises').orderByChild('id').limitToLast(1)
+    );
 
-  // const query = firebase.database().ref('exercises/').limitToLast(1);
-  // const ids = query.once('value').then((snap) => {
-  //   const item = snap.val();
-  //   for (const itemid in item) {
-  //     id = Number(itemid) + 1;
-  //     return id;
-  //   }
-  // });
+    if (lastExercise) {
+      const lastExerciseId = lastExercise[Object.keys(lastExercise)[0]].id;
 
-  // console.log('id', ids);
+      yield call(
+        fire.database.update,
+        `exercises/${lastExerciseId + 1}`, {
+          id: lastExerciseId + 1,
+          name: action.exercise.name,
+          image_start: action.exercise.image_start,
+          image_end: action.exercise.image_end,
+          level: action.exercise.level,
+          muscle: action.exercise.muscle,
+          type: action.exercise.type
+        }
+      );
+    }
+  } catch (e) {
+    console.log('Error creating new exercise', e);
+  } finally {
+    Navigation.home();
+  }
 }

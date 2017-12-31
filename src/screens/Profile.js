@@ -35,7 +35,6 @@ class Profile extends Component {
   }
 
   render() {
-    console.log('user details', this.props.details);
     return (
       <View style={styles.screen}>
         <View style={styles.header}>
