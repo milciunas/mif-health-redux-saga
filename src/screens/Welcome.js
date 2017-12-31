@@ -37,7 +37,8 @@ const options = {
 class WelcomeScreen extends Component {
   static propTypes = {
     loginWithEmail: PropTypes.func.isRequired,
-    loading: PropTypes.bool
+    loading: PropTypes.bool,
+    loginError: PropTypes.string
   }
 
   constructor(props) {
@@ -81,6 +82,14 @@ class WelcomeScreen extends Component {
           <View style={styles.title}>
             <Text style={styles.titleText}>{'MIF HEALTH'}</Text>
           </View>
+          {
+            !this.props.loginError ? null :
+              <View style={styles.error}>
+                <Text style={styles.errorText}>
+                  {this.props.loginError}
+                </Text>
+              </View>
+          }
           <View style={styles.formContainer}>
             <Form
               type={User}
@@ -109,7 +118,8 @@ class WelcomeScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.auth.loading
+  loading: state.auth.loading,
+  loginError: state.auth.loginError
 });
 
 const actionsToProps = {
@@ -162,5 +172,15 @@ const styles = StyleSheet.create({
     paddingLeft : 10,
     paddingRight : 10,
     fontSize: 20
+  },
+  error: {
+    justifyContent: 'center'
+  },
+  errorText: {
+    marginTop: 20,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
+    color: 'red'
   }
 });

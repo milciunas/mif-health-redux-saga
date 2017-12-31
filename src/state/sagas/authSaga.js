@@ -62,10 +62,11 @@ export function* loginWithEmail(action) {
       }
     }
 
-    yield call(Navigation.home);
     return false;
   } catch (error) {
-    console.log('Error in login with email and password: ', email, password, error);
+    console.log('Error loggin in', error);
+    const message = 'Email or password is incorrect!';
+    yield put({ type: LOGIN_WITH_EMAIL.ERROR, message });
   }
 }
 
@@ -73,7 +74,7 @@ export function createUserInDb(uid, email) {
   try {
     firebase.database().ref('users/' + uid).set({ uid, email, type: 'user' });
   } catch (e) {
-    console.log('Cannot set new user in database', e);
+    console.log('Error while setting new user in database', e);
   }
 }
 
@@ -206,6 +207,7 @@ export function* fetchOrCreateWorkout() {
 
       yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
       yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
+      yield call(Navigation.home);
     } else {
       yield put({ type: CREATE_USER_WORKOUT.REQUESTED, details: userDetails });
     }

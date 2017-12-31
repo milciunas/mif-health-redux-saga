@@ -366,6 +366,6 @@ export function* createExercise(action) {
   } catch (e) {
     console.log('Error creating new exercise', e);
   } finally {
-    Navigation.home();
+    yield call(Navigation.home);
   }
 }

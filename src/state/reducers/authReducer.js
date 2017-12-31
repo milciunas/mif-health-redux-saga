@@ -1,11 +1,13 @@
 import { Record } from 'immutable';
-import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL, LOGIN_WITH_EMAIL, CREATE_USER_DETAILS } from '../actions/actionTypes';
+import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL,
+  LOGIN_WITH_EMAIL, CREATE_USER_DETAILS } from '../actions/actionTypes';
 
 const initialState = Record({
   uid: null,
   email: null,
   details: null,
   registrationError: '',
+  loginError: '',
   loading: false,
   exercises: []
 });
@@ -32,6 +34,10 @@ function storeUserDetails(state, action) {
   return state.set('details', action.details);
 }
 
+function setLoginError(state, action) {
+  return state.set('loginError', action.message).set('loading', false);
+}
+
 export default function(state = new initialState(), action) {
   switch (action.type) {
     case FETCH_USER_WORKOUT.SUCCESS:
@@ -44,6 +50,8 @@ export default function(state = new initialState(), action) {
       return setLoading(state);
     case LOGIN_WITH_EMAIL.SUCCESS:
       return setUser(state, action);
+    case LOGIN_WITH_EMAIL.ERROR:
+      return setLoginError(state, action);
     case CREATE_USER_DETAILS.SUCCESS:
       return storeUserDetails(state, action);
     default:

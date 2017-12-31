@@ -61,7 +61,8 @@ const options = {
     },
     weight: {
       keyboardType: 'numeric',
-      placeholder: '80'
+      placeholder: '80',
+      autoFocus: true
     },
     height: {
       keyboardType: 'numeric',
@@ -71,10 +72,7 @@ const options = {
       keyboardType: 'numeric',
       placeholder: '20'
     }
-  },
-  autoCapitalize: 'none',
-  autoCorrect: false,
-  autoFocus: true
+  }
 };
 
 class RegisterDetailsScreen extends Component {
