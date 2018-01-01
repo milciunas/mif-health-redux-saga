@@ -3,18 +3,19 @@ import {
   FETCH_USER_WORKOUT,
   CREATE_USER_WORKOUT,
   REGENERATE_WORKOUT,
-  CREATE_EXERCISE
+  CREATE_EXERCISE,
+  REGENERATE_USER_WORKOUT
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 import * as firebase from 'firebase';
 import moment from 'moment';
-import { each } from '@firebase/database/dist/esm/src/core/util/util';
 
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);
   yield takeLatest(CREATE_USER_WORKOUT.REQUESTED, createWorkout);
   yield takeLatest(REGENERATE_WORKOUT.REQUESTED, regenerateWorkout);
+  yield takeLatest(REGENERATE_USER_WORKOUT.REQUESTED, regenerateUserWorkout);
   yield takeLatest(CREATE_EXERCISE.REQUESTED, createExercise);
 }
 
@@ -33,6 +34,18 @@ export function* createWorkout({ details }) {
     console.log('Error while creating a workout in user profile', e);
   } finally {
     yield call(Navigation.home);
+  }
+}
+
+export function* createWorkoutForUser({ details }) {
+  const workoutMuscles = yield call(getWorkoutMuscleGroups, details);
+  const workoutDays = yield call(getWorkoutDays, workoutMuscles.length);
+  const exercises = yield call(fire.database.read, 'exercises');
+
+  try {
+    const response = yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
+  } catch (e) {
+    console.log('Error while creating a workout in user profile', e);
   }
 }
 
@@ -74,32 +87,31 @@ export function getWorkoutMuscleGroups(details) {
       if (age >= 16 && age <= 50) {
         return [
           'cardio/chest',
-          'legs',
           'back/arms',
-          'cardio'
+          'cardio/legs'
         ];
       } else {
         return [
-          'legs/back/chest',
+          'cardio/legs',
+          'back/chest',
           'cardio/shoulders/arms',
-          'legs/back/chest',
-          'cardio'
+          'legs/back/chest'
         ];
       }
     } else {
       if (age >= 16 && age <= 50) {
         return [
-          'chest/shoulders',
-          'cardio/legs',
-          'back/arms',
-          'cardio'
-        ];
-      } else {
-        return [
           'legs/back/chest',
           'cardio/shoulders/arms',
           'legs/back/chest',
-          'cardio'
+          'cardio/chest'
+        ];
+      } else {
+        return [
+          'chest/shoulders',
+          'cardio/legs',
+          'back/arms',
+          'cardio/chest'
         ];
       }
     }
@@ -337,6 +349,16 @@ export function* regenerateWorkout() {
     yield call(createWorkout, { details: userDetails });
   } catch (e) {
     console.log('error while regenerating workout', e);
+  }
+}
+
+export function* regenerateUserWorkout(action) {
+  try {
+    const userDetails = yield call(fire.database.read, 'users/' + action.user.uid);
+
+    yield call(createWorkoutForUser, { details: userDetails });
+  } catch (e) {
+    console.log('error while regenerating workout for user', e);
   }
 }
 

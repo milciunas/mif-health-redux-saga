@@ -5,12 +5,13 @@ import { PropTypes } from 'prop-types';
 import { Actions as Navigation } from 'react-native-router-flux';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { regenerateWorkout } from '../state/actions/authActions';
+import { regenerateWorkout, deleteUser } from '../state/actions/authActions';
 
 class Profile extends Component {
   static propTypes = {
     details: PropTypes.object.isRequired,
-    regenerateWorkout: PropTypes.func
+    regenerateWorkout: PropTypes.func,
+    deleteUser: PropTypes.func
   }
 
   logout = () => {
@@ -30,8 +31,32 @@ class Profile extends Component {
     );
   }
 
+  editDetails = () => {
+    Navigation.registerDetails();
+  }
+
   createExercise = () => {
     Navigation.createExercise();
+  }
+
+  manageUsers = () => {
+    Navigation.manageUsers();
+  }
+
+  deleteUser = () => {
+    this.props.deleteUser();
+  }
+
+  deleteUserWarning = () => {
+    Alert.alert(
+      'Warning!',
+      'This will create completely delete your account!',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Continue', onPress: () => this.props.deleteUser() }
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -57,15 +82,37 @@ class Profile extends Component {
           <View style={styles.splitter} />
           <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.button} onPress={this.regenerateWorkout}>
-              <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'red', padding: 10 }}>{'Regenerate workout'}</Text>
+              <Text style={styles.buttonText}>{'Regenerate workout'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.button} onPress={this.editDetails}>
+              <Text style={styles.buttonText}>{'Edit personal details'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.button} onPress={this.deleteUserWarning}>
+              <Text style={[ styles.buttonText, { color: 'red' } ]}>{'Delete account'}</Text>
             </TouchableOpacity>
           </View>
           {
             this.props.details.type && this.props.details.type === 'admin' ?
-              <View style={styles.buttonRow}>
-                <TouchableOpacity style={styles.button} onPress={this.createExercise}>
-                  <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'green', padding: 10 }}>{'Create exercise'}</Text>
-                </TouchableOpacity>
+              <View>
+                <View style={styles.adminHeader}>
+                  <View style={styles.headerTextContainer}>
+                    <Text style={styles.headerText}>{'Admin panel'}</Text>
+                  </View>
+                </View>
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity style={styles.button} onPress={this.createExercise}>
+                    <Text style={styles.buttonText}>{'Create exercise'}</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity style={styles.button} onPress={this.manageUsers}>
+                    <Text style={styles.buttonText}>{'Manage users'}</Text>
+                  </TouchableOpacity>
+                </View>
               </View> : null
           }
         </ScrollView>
@@ -80,7 +127,8 @@ class Profile extends Component {
 }
 
 const actionsToProps = {
-  regenerateWorkout
+  regenerateWorkout,
+  deleteUser
 };
 
 const mapStateToProps = state => ({
@@ -99,9 +147,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10
   },
-  header: {
+  adminHeader: {
+    borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: 'rgba(8,8,8,0.2)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    padding: 5,
+    minHeight: 50
+  },
+  header: {
+    borderBottomWidth: 1,
+    borderColor: 'rgba(8,8,8,0.4)',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -117,17 +176,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   menuContainer: {
-    flex: 1,
     paddingVertical: 20,
     paddingTop: 0
   },
   menuRow: {
     padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  buttonRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -148,6 +201,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   button: {
     flex: 1,
     backgroundColor: 'white',
@@ -160,5 +218,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginRight: 10,
     marginLeft: 10
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#2196F3',
+    padding: 10
   }
 });

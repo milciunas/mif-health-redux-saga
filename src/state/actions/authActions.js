@@ -5,7 +5,11 @@ import {
   FETCH_USER_WORKOUT,
   CREATE_USER_WORKOUT,
   REGENERATE_WORKOUT,
-  CREATE_EXERCISE
+  REGENERATE_USER_WORKOUT,
+  CREATE_EXERCISE,
+  GET_USERS,
+  DELETE_USER,
+  MAKE_ADMIN
 } from './actionTypes';
 
 export const storeUserWorkout = (workout) => ({
@@ -54,4 +58,22 @@ export const regenerateWorkout = () => ({
 export const createExercise = (exercise) => ({
   type: CREATE_EXERCISE.REQUESTED,
   exercise
+});
+
+export const getUsers = () => ({
+  type: GET_USERS.REQUESTED
+});
+
+export const deleteUser = () => ({
+  type: DELETE_USER.REQUESTED
+});
+
+export const makeAdmin = (user) => ({
+  type: MAKE_ADMIN.REQUESTED,
+  user
+});
+
+export const regenerateUserWorkout = (user) => ({
+  type: REGENERATE_USER_WORKOUT.REQUESTED,
+  user
 });
