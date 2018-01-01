@@ -5,12 +5,13 @@ import { PropTypes } from 'prop-types';
 import { Actions as Navigation } from 'react-native-router-flux';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 import * as firebase from 'firebase';
-import { regenerateWorkout } from '../state/actions/authActions';
+import { regenerateWorkout, deleteUser } from '../state/actions/authActions';
 
 class Profile extends Component {
   static propTypes = {
     details: PropTypes.object.isRequired,
-    regenerateWorkout: PropTypes.func
+    regenerateWorkout: PropTypes.func,
+    deleteUser: PropTypes.func
   }
 
   logout = () => {
@@ -42,6 +43,22 @@ class Profile extends Component {
     Navigation.manageUsers();
   }
 
+  deleteUser = () => {
+    this.props.deleteUser();
+  }
+
+  deleteUserWarning = () => {
+    Alert.alert(
+      'Warning!',
+      'This will create completely delete your account!',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Continue', onPress: () => this.props.deleteUser() }
+      ],
+      { cancelable: false }
+    );
+  }
+
   render() {
     return (
       <View style={styles.screen}>
@@ -71,6 +88,11 @@ class Profile extends Component {
           <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.button} onPress={this.editDetails}>
               <Text style={styles.buttonText}>{'Edit personal details'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.button} onPress={this.deleteUserWarning}>
+              <Text style={[ styles.buttonText, { color: 'red' } ]}>{'Delete account'}</Text>
             </TouchableOpacity>
           </View>
           {
@@ -105,7 +127,8 @@ class Profile extends Component {
 }
 
 const actionsToProps = {
-  regenerateWorkout
+  regenerateWorkout,
+  deleteUser
 };
 
 const mapStateToProps = state => ({

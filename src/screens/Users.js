@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { getUsers } from '../state/actions/authActions';
+import { getUsers, makeAdmin, regenerateUserWorkout } from '../state/actions/authActions';
 import Modal from 'react-native-modal';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 class Users extends Component {
   static propTypes = {
     getUsers: PropTypes.func.isRequired,
+    makeAdmin: PropTypes.func.isRequired,
+    regenerateUserWorkout: PropTypes.func.isRequired,
     users: PropTypes.array
   }
 
@@ -16,6 +19,7 @@ class Users extends Component {
 
     this.state = {
       showModal: false,
+      actionDone: null,
       user: null
     };
   }
@@ -34,6 +38,16 @@ class Users extends Component {
     </TouchableOpacity>
   );
 
+  makeAdmin = () => {
+    this.props.makeAdmin(this.state.user);
+    this.setState({ actionDone: 'admin' });
+  }
+
+  regenerateWorkout = () => {
+    this.props.regenerateUserWorkout(this.state.user);
+    this.setState({ actionDone: 'workout' });
+  }
+
   render() {
     return (
       <View style={styles.screen}>
@@ -43,7 +57,7 @@ class Users extends Component {
           </View>
         </View>
         {
-          this.props.users ?
+          this.props.users.length > 0 ?
             <ScrollView contentContainerStyle={styles.scrollView}>
               <FlatList
                 data={this.props.users}
@@ -57,7 +71,7 @@ class Users extends Component {
                         showModal: !this.state.showModal,
                         user: item
                       })}>
-                      <Text>{item.email}</Text>
+                      <Text style={styles.menuText}>{item.email}</Text>
                     </TouchableOpacity>
                     <View style={styles.splitter} />
                   </View>
@@ -67,22 +81,26 @@ class Users extends Component {
         }
         <Modal isVisible={this.state.showModal} style={styles.bottomModal}>
           <View style={styles.modalContent}>
+            {
+              this.state.actionDone === 'admin' ?
+                <View>
+                  <Text style={{ color: 'green' }}>{this.state.user.email + 'was made admin!'}</Text>
+                </View> : this.state.actionDone === 'workout' ?
+                  <View>
+                    <Text style={{ color: 'green' }}>{'Workout generated for ' + this.state.user.email}</Text>
+                  </View> : null
+            }
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.buttonModal} onPress={this.manageUsers}>
-                <Text style={styles.buttonText}>{'Delete user'}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.buttonModal} onPress={this.manageUsers}>
+              <TouchableOpacity style={styles.buttonModal} onPress={this.makeAdmin}>
                 <Text style={styles.buttonText}>{'Make admin'}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.buttonRow}>
-              <TouchableOpacity style={styles.buttonModal} onPress={this.manageUsers}>
+              <TouchableOpacity style={styles.buttonModal} onPress={this.regenerateWorkout}>
                 <Text style={styles.buttonText}>{'Regenerate workout'}</Text>
               </TouchableOpacity>
             </View>
-            {this._renderButton('Close', () => this.setState({ showModal: false }))}
+            {this._renderButton('Close', () => this.setState({ showModal: false, user: null, actionDone: null }))}
           </View>
         </Modal>
       </View>
@@ -91,7 +109,9 @@ class Users extends Component {
 }
 
 const actionsToProps = {
-  getUsers
+  getUsers,
+  makeAdmin,
+  regenerateUserWorkout
 };
 
 const mapStateToProps = state => ({
@@ -132,9 +152,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   menuRow: {
-    padding: 5,
+    padding: 20,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  menuText: {
+    fontSize: 16,
+    fontWeight: '500'
   },
   bottomModal: {
     justifyContent: 'flex-end',
@@ -164,9 +188,7 @@ const styles = StyleSheet.create({
   },
   buttonModal: {
     flex: 1,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderColor: 'rgba(8,8,8,0.1)',
+    backgroundColor: 'rgba(8,8,8,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
