@@ -9,7 +9,6 @@ import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
 import * as firebase from 'firebase';
 import moment from 'moment';
-import { each } from '@firebase/database/dist/esm/src/core/util/util';
 
 export function* watchWorkoutSaga() {
   yield takeLatest(FETCH_USER_WORKOUT.REQUESTED, fetchUserWorkout);

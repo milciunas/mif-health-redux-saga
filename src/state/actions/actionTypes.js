@@ -20,4 +20,6 @@ export const FETCH_USER_WORKOUT = createAsyncActionType('FETCH_USER_WORKOUT');
 export const CREATE_USER_WORKOUT = createAsyncActionType('CREATE_USER_WORKOUT');
 export const GET_TODAYS_WORKOUT = createAsyncActionType('GET_TODAYS_WORKOUT');
 export const REGENERATE_WORKOUT = createAsyncActionType('REGENERATE_WORKOUT');
+
 export const CREATE_EXERCISE = createAsyncActionType('CREATE_EXERCISE');
+export const GET_USERS = createAsyncActionType('GET_USERS');
