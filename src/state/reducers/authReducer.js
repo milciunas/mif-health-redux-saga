@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL,
-  LOGIN_WITH_EMAIL, CREATE_USER_DETAILS } from '../actions/actionTypes';
+  LOGIN_WITH_EMAIL, CREATE_USER_DETAILS, LOGIN_ANONYMOUSLY } from '../actions/actionTypes';
 
 const initialState = Record({
   uid: null,
@@ -16,6 +16,10 @@ function setUser(state, action) {
   return state
     .set('uid', action.uid)
     .set('email', action.email);
+}
+
+function setAnonymousUser(state, action) {
+  return state.set('uid', action.uid);
 }
 
 function setUserWorkout(state, action) {
@@ -50,6 +54,8 @@ export default function(state = new initialState(), action) {
       return setLoading(state);
     case LOGIN_WITH_EMAIL.SUCCESS:
       return setUser(state, action);
+    case LOGIN_ANONYMOUSLY.SUCCESS:
+      return setAnonymousUser(state, action);
     case LOGIN_WITH_EMAIL.ERROR:
       return setLoginError(state, action);
     case CREATE_USER_DETAILS.SUCCESS:

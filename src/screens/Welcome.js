@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { loginWithEmail } from '../state/actions/authActions';
+import { loginWithEmail, loginAnonymously } from '../state/actions/authActions';
 import t from 'tcomb-form-native';
 import { Actions as Navigation } from 'react-native-router-flux';
+import * as firebase from 'firebase';
 const Form = t.form.Form;
 
 const Email = t.refinement(t.String, email => {
@@ -37,6 +38,7 @@ const options = {
 class WelcomeScreen extends Component {
   static propTypes = {
     loginWithEmail: PropTypes.func.isRequired,
+    loginAnonymously: PropTypes.func.isRequired,
     loading: PropTypes.bool,
     loginError: PropTypes.string
   }
@@ -55,6 +57,10 @@ class WelcomeScreen extends Component {
 
   navigateToRegister = () => {
     Navigation.register();
+  }
+
+  navigateToTry = () => {
+    this.props.loginAnonymously();
   }
 
   login = () => {
@@ -104,11 +110,19 @@ class WelcomeScreen extends Component {
                 <Text style={styles.loginText}>Login</Text>
               </TouchableOpacity>
             </View>
+            <View style={styles.loginBtn}>
+              <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={this.navigateToRegister}
+                underlayColor='#fff'>
+                <Text style={styles.loginText}>Register</Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
-              style={styles.loginScreenButton}
-              onPress={this.navigateToRegister}
+              style={styles.tryOutButton}
+              onPress={this.navigateToTry}
               underlayColor='#fff'>
-              <Text style={styles.loginText}>Register</Text>
+              <Text style={styles.loginText}>Try out</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -123,7 +137,8 @@ const mapStateToProps = state => ({
 });
 
 const actionsToProps = {
-  loginWithEmail
+  loginWithEmail,
+  loginAnonymously
 };
 
 export default connect(mapStateToProps, actionsToProps)(WelcomeScreen);
@@ -163,6 +178,15 @@ const styles = StyleSheet.create({
     paddingTop:10,
     paddingBottom:10,
     backgroundColor:'#2196F3',
+    borderRadius:20
+  },
+  tryOutButton: {
+    marginRight:40,
+    marginLeft:40,
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'orange',
     borderRadius:20
   },
   loginText:{

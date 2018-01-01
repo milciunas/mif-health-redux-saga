@@ -4,7 +4,8 @@ import {
   LOGIN_WITH_EMAIL,
   CREATE_USER_DETAILS,
   FETCH_USER_WORKOUT,
-  CREATE_USER_WORKOUT
+  CREATE_USER_WORKOUT,
+  LOGIN_ANONYMOUSLY
 } from '../actions/actionTypes';
 import fire from '../config/firebaseConfig';
 import { Actions as Navigation } from 'react-native-router-flux';
@@ -17,6 +18,7 @@ export function* watchSignUpEmailSaga() {
 
 export function* watchLoginEmailSaga() {
   yield takeLatest(LOGIN_WITH_EMAIL.REQUESTED, loginWithEmail);
+  yield takeLatest(LOGIN_ANONYMOUSLY.REQUESTED, loginAnonymously);
 }
 
 export function* registerWithEmail(action) {
@@ -70,9 +72,31 @@ export function* loginWithEmail(action) {
   }
 }
 
+export function* loginAnonymously() {
+  try {
+    const { uid } = yield call(fire.auth.signInAnonymously);
+    if (uid) {
+      yield call(createAnonymousUserInDb, uid);
+      yield put({ type: LOGIN_ANONYMOUSLY.SUCCESS, uid });
+    }
+  } catch (e) {
+    console.log('Error trying to login anonymously', e);
+  } finally {
+    yield call(Navigation.registerDetails);
+  }
+}
+
 export function createUserInDb(uid, email) {
   try {
     firebase.database().ref('users/' + uid).set({ uid, email, type: 'user' });
+  } catch (e) {
+    console.log('Error while setting new user in database', e);
+  }
+}
+
+export function createAnonymousUserInDb(uid) {
+  try {
+    firebase.database().ref('users/' + uid).set({ uid, type: 'anonymous' });
   } catch (e) {
     console.log('Error while setting new user in database', e);
   }

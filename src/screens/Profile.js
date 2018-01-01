@@ -90,11 +90,14 @@ class Profile extends Component {
               <Text style={styles.buttonText}>{'Edit personal details'}</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.button} onPress={this.deleteUserWarning}>
-              <Text style={[ styles.buttonText, { color: 'red' } ]}>{'Delete account'}</Text>
-            </TouchableOpacity>
-          </View>
+          {
+            this.props.details.type && this.props.details.type !== 'anonymous' ?
+              <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.button} onPress={this.deleteUserWarning}>
+                  <Text style={[ styles.buttonText, { color: 'red' } ]}>{'Delete account'}</Text>
+                </TouchableOpacity>
+              </View> : null
+          }
           {
             this.props.details.type && this.props.details.type === 'admin' ?
               <View>

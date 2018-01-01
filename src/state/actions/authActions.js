@@ -9,7 +9,8 @@ import {
   CREATE_EXERCISE,
   GET_USERS,
   DELETE_USER,
-  MAKE_ADMIN
+  MAKE_ADMIN,
+  LOGIN_ANONYMOUSLY
 } from './actionTypes';
 
 export const storeUserWorkout = (workout) => ({
@@ -28,6 +29,10 @@ export const loginWithEmail = (email, password, fromWhere) => ({
   email,
   password,
   fromWhere
+});
+
+export const loginAnonymously = () => ({
+  type: LOGIN_ANONYMOUSLY.REQUESTED
 });
 
 export const setUserAfterRegistration = (uid, email) => ({
