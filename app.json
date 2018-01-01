@@ -1,11 +1,11 @@
 {
   "expo": {
-    "sdkVersion": "23.0.0",
-    "name": "mif-health",
+    "sdkVersion": "24.0.0",
+    "name": "mifhealth",
     "description": "MIF Health bachelors degree project",
-    "slug": "mif-health",
+    "slug": "mifhealth2",
     "privacy": "unlisted",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "primaryColor": "#fff",
     "icon": "",
