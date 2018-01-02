@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL,
+import { FETCH_USER_WORKOUT, REGISTER_WITH_EMAIL, REGISTER_WITH_EMAIL_START,
   LOGIN_WITH_EMAIL, CREATE_USER_DETAILS, LOGIN_ANONYMOUSLY } from '../actions/actionTypes';
 
 const initialState = Record({
@@ -9,6 +9,7 @@ const initialState = Record({
   registrationError: '',
   loginError: '',
   loading: false,
+  registerLoading: false,
   exercises: []
 });
 
@@ -42,12 +43,20 @@ function setLoginError(state, action) {
   return state.set('loginError', action.message).set('loading', false);
 }
 
+function setRegisterLoading(state, action) {
+  return state.set('registerLoading', action.loading);
+}
+
 export default function(state = new initialState(), action) {
   switch (action.type) {
     case FETCH_USER_WORKOUT.SUCCESS:
       return setUserWorkout(state, action);
     case FETCH_USER_WORKOUT.REQUESTED:
       return setLoading(state, action);
+    case REGISTER_WITH_EMAIL_START.REQUESTED:
+      return setRegisterLoading(state, action);
+    case REGISTER_WITH_EMAIL_START.SUCCESS:
+      return setRegisterLoading(state, action);
     case REGISTER_WITH_EMAIL.ERROR:
       return setRegistrationError(state, action);
     case LOGIN_WITH_EMAIL.REQUESTED:

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
@@ -61,23 +61,23 @@ const options = {
     },
     weight: {
       keyboardType: 'numeric',
-      placeholder: '80',
-      autoFocus: true
+      placeholder: '40 - 150 (kg)'
     },
     height: {
       keyboardType: 'numeric',
-      placeholder: '180'
+      placeholder: '100 - 230 (cm)'
     },
     age: {
       keyboardType: 'numeric',
-      placeholder: '20'
+      placeholder: '10 - 120 (years)'
     }
   }
 };
 
 class RegisterDetailsScreen extends Component {
   static propTypes = {
-    createUserDetails: PropTypes.func.isRequired
+    createUserDetails: PropTypes.func.isRequired,
+    registerLoading: PropTypes.bool
   }
 
   constructor(props) {
@@ -112,19 +112,19 @@ class RegisterDetailsScreen extends Component {
     const height = Number(form.height);
 
     const validAge = this.validation(t.Number, (n) => {
-      if (n < 10 || n >= 120) {
+      if (n < 10 || n > 120) {
         return 'Age is invalid';
       }
     });
 
     const validHeight = this.validation(t.Number, (n) => {
-      if (n <= 100 || n >= 230) {
+      if (n < 100 || n > 230) {
         return 'Height is invalid';
       }
     });
 
     const validWeight = this.validation(t.Number, (n) => {
-      if (n <= 40 || n >= 150) {
+      if (n < 40 || n > 150) {
         return 'Weight is invalid';
       }
     });
@@ -162,39 +162,47 @@ class RegisterDetailsScreen extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.screen}>
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>{'Enter you details'}</Text>
+    if (this.props.registerLoading) {
+      return <ActivityIndicator
+        animating={true}
+        size='large'
+        style={styles.loadingIncidator}
+        color='#2196F3' />;
+    } else {
+      return (
+        <View style={styles.screen}>
+          <View style={styles.header}>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerText}>{'Enter you details'}</Text>
+            </View>
+          </View>
+          {
+            !this.state.error ? null :
+              <View style={styles.error}>
+                <Text style={styles.errorText}>
+                  {this.state.error}
+                </Text>
+                <View style={styles.splitter} />
+              </View>
+          }
+          <AutoScroll contentContainerStyle={styles.container} keyboardShouldPersistTaps={'never'}>
+            <Form
+              type={User}
+              options={options}
+              value={this.state.form}
+              onChange={this.onChange} />
+          </AutoScroll>
+          <View style={styles.nextBtn}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.signUpEmailDetails}
+              underlayColor='#fff'>
+              <Text style={styles.text}>{'Next'}</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        {
-          !this.state.error ? null :
-            <View style={styles.error}>
-              <Text style={styles.errorText}>
-                {this.state.error}
-              </Text>
-              <View style={styles.splitter} />
-            </View>
-        }
-        <AutoScroll contentContainerStyle={styles.container} keyboardShouldPersistTaps={'never'}>
-          <Form
-            type={User}
-            options={options}
-            value={this.state.form}
-            onChange={this.onChange} />
-        </AutoScroll>
-        <View style={styles.nextBtn}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.signUpEmailDetails}
-            underlayColor='#fff'>
-            <Text style={styles.text}>{'Next'}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+      );
+    }
   }
 }
 
@@ -202,7 +210,11 @@ const actionsToProps = {
   createUserDetails
 };
 
-export default connect(null, actionsToProps)(RegisterDetailsScreen);
+const mapStateToProps = state => ({
+  registerLoading: state.auth.registerLoading
+});
+
+export default connect(mapStateToProps, actionsToProps)(RegisterDetailsScreen);
 
 const styles = StyleSheet.create({
   screen: {
@@ -267,5 +279,10 @@ const styles = StyleSheet.create({
   splitter: {
     borderBottomWidth: 1,
     borderColor: 'rgba(8,8,8,0.2)'
+  },
+  loadingIncidator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

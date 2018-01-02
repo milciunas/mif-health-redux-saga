@@ -16,7 +16,6 @@ class Header extends Component {
   renderBack = () => { return Navigation.pop(); }
 
   render() {
-    console.log('this.props', this.props);
     return (
       <View style={styles.header}>
         <TouchableOpacity

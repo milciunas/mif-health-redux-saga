@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   REGISTER_WITH_EMAIL,
+  REGISTER_WITH_EMAIL_START,
   LOGIN_WITH_EMAIL,
   CREATE_USER_DETAILS,
   FETCH_USER_WORKOUT,
@@ -23,7 +24,9 @@ export function* watchLoginEmailSaga() {
 
 export function* registerWithEmail(action) {
   const { email, password } = action;
-
+  const loading = true;
+  yield put({ type: REGISTER_WITH_EMAIL_START.REQUESTED, loading });
+  yield call(Navigation.registerDetails);
   try {
     const { uid } = yield call(fire.auth.createUserWithEmailAndPassword, email, password);
 
@@ -38,15 +41,15 @@ export function* registerWithEmail(action) {
 
       if (loginResult) {
         createUserInDb(uid, email);
-        yield call(Navigation.registerDetails);
+        const loading = false;
+        yield put({ type: REGISTER_WITH_EMAIL_START.SUCCESS, loading });
       }
     }
   } catch (e) {
-    const { code, message } = e;
-    console.log('Error trying to register new account');
-    console.log('Error code: ', code);
-    console.log('Error message: ', message);
+    const { message } = e;
+    console.log('Error trying to register new account', e);
     yield put({ type: REGISTER_WITH_EMAIL.ERROR, message });
+    yield call(Navigation.pop);
   }
 }
 
