@@ -102,27 +102,27 @@ class WelcomeScreen extends Component {
               options={options}
               value={this.state.form}
               onChange={this.onChange} />
-            <View style={styles.loginBtn}>
+            <View style={styles.btn}>
               <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={this.login}
                 underlayColor='#fff'>
-                <Text style={styles.loginText}>Login</Text>
+                <Text style={styles.btnText}>Login</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.loginBtn}>
+            <View style={styles.btn}>
               <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={this.navigateToRegister}
                 underlayColor='#fff'>
-                <Text style={styles.loginText}>Register</Text>
+                <Text style={styles.btnText}>Register</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={styles.tryOutButton}
               onPress={this.navigateToTry}
               underlayColor='#fff'>
-              <Text style={styles.loginText}>Try out</Text>
+              <Text style={styles.btnText}>Try out</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 20
   },
-  loginBtn: {
+  btn: {
     marginBottom: 10
   },
   title: {
@@ -172,24 +172,20 @@ const styles = StyleSheet.create({
     fontWeight: '700'
   },
   loginScreenButton: {
-    marginRight:40,
-    marginLeft:40,
     marginTop:10,
     paddingTop:10,
     paddingBottom:10,
     backgroundColor:'#2196F3',
-    borderRadius:20
+    borderRadius:4
   },
   tryOutButton: {
-    marginRight:40,
-    marginLeft:40,
     marginTop:10,
     paddingTop:10,
     paddingBottom:10,
     backgroundColor:'orange',
-    borderRadius:20
+    borderRadius: 4
   },
-  loginText:{
+  btnText:{
     color:'#fff',
     backgroundColor: 'rgba(0,0,0,0)',
     textAlign:'center',

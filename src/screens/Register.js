@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import { View, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import t from 'tcomb-form-native';
 import { registerWithEmail } from '../state/actions/authActions';
+import { Actions as Navigation } from 'react-native-router-flux';
 
 import Header from '../components/Header';
 
@@ -55,14 +56,18 @@ class RegisterScreen extends Component {
         email: '',
         password: '',
         name: ''
-      }
+      },
+      error: null
     };
   }
 
   signUp = () => {
     const { email, password } = this.state.form;
     if (email && password && email.length > 0 && password.length > 0) {
+      this.setState({ error: null });
       this.props.registerWithEmail(email, password);
+    } else {
+      this.setState({ error: 'Please enter your details!' });
     }
   }
 
@@ -73,14 +78,20 @@ class RegisterScreen extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Header />
+        <Header title={'Register'} />
         {
-          !this.props.error ? null :
+          this.state.error ?
             <View style={styles.error}>
               <Text style={styles.errorText}>
-                {this.props.error}
+                {this.state.error}
               </Text>
-            </View>
+            </View> :
+            this.props.error ?
+              <View style={styles.error}>
+                <Text style={styles.errorText}>
+                  {this.props.error}
+                </Text>
+              </View> : null
         }
         <View style={styles.container}>
           <Form
@@ -88,10 +99,12 @@ class RegisterScreen extends Component {
             options={options}
             value={this.state.form}
             onChange={this.onChange} />
-          <Button
-            title={'Register'}
+          <TouchableOpacity
+            style={styles.button}
             onPress={this.signUp}
-          />
+            underlayColor='#fff'>
+            <Text style={styles.btnText}>{'Continue'}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -113,8 +126,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-    justifyContent: 'center',
-    marginTop: 20,
+    flex: 1,
     padding: 20
   },
   error: {
@@ -126,5 +138,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     color: 'red'
+  },
+  button: {
+    marginTop:10,
+    paddingTop:10,
+    paddingBottom:10,
+    backgroundColor:'#2196F3',
+    borderRadius:4
+  },
+  btnText:{
+    color:'#fff',
+    backgroundColor: 'rgba(0,0,0,0)',
+    textAlign:'center',
+    paddingLeft : 10,
+    paddingRight : 10,
+    fontSize: 20
   }
 });

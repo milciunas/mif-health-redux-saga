@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, PixelRatio } from 'react-native';
-import { Router, Scene, Stack } from 'react-native-router-flux';
+import { BackHandler, ToastAndroid, StyleSheet, PixelRatio } from 'react-native';
+import { Router, Scene, Stack, Actions } from 'react-native-router-flux';
 import { Ionicons } from '@expo/vector-icons';
 
 import WelcomeScreen from '../screens/Welcome';
@@ -19,7 +19,27 @@ const TabIcon = ({ focused, iconName }) => {
   );
 };
 
+
 export default class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      doubleBackToExitPressedOnce: false
+    };
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    return true;
+  }
+
   render() {
     return (
       <Router>
