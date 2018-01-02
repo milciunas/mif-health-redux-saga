@@ -126,6 +126,7 @@ export function* createUserDetails(action) {
       height, weight, gender, level, activity, goal, age, bmi, idealWeight, calories
     });
 
+    yield call(Navigation.home);
     yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
   } catch (e) {
     console.log('Error creating user details', e);

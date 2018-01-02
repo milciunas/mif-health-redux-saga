@@ -36,7 +36,7 @@ function setLoading(state) {
 }
 
 function storeUserDetails(state, action) {
-  return state.set('details', action.details);
+  return state.set('details', action.details).set('loading', false);
 }
 
 function setLoginError(state, action) {
@@ -67,6 +67,8 @@ export default function(state = new initialState(), action) {
       return setAnonymousUser(state, action);
     case LOGIN_WITH_EMAIL.ERROR:
       return setLoginError(state, action);
+    case CREATE_USER_DETAILS.REQUESTED:
+      return setLoading(state, action);
     case CREATE_USER_DETAILS.SUCCESS:
       return storeUserDetails(state, action);
     default:

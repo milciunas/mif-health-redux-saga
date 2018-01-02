@@ -43,7 +43,7 @@ export function* createWorkoutForUser({ details }) {
   const exercises = yield call(fire.database.read, 'exercises');
 
   try {
-    const response = yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
+    yield call(createWorkoutByDay, details, workoutMuscles, workoutDays, exercises);
   } catch (e) {
     console.log('Error while creating a workout in user profile', e);
   }
@@ -326,13 +326,10 @@ export function* fetchUserWorkout(action) {
           } else {
             if (weekday === workout.day) {
               exercises = workout.exercises;
-            } else {
-              exercises = null;
             }
           }
         }
       }
-
       yield put({ type: FETCH_USER_WORKOUT.SUCCESS, exercises });
     }
   } catch (e) {
