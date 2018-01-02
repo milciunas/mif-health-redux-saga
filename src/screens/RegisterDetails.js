@@ -6,6 +6,7 @@ import t from 'tcomb-form-native';
 import { validate } from 'tcomb-validation';
 import { createUserDetails } from '../state/actions/authActions';
 import AutoScroll from '../components/AutoScroll';
+import Header from '../components/Header';
 
 const Form = t.form.Form;
 
@@ -171,11 +172,7 @@ class RegisterDetailsScreen extends Component {
     } else {
       return (
         <View style={styles.screen}>
-          <View style={styles.header}>
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.headerText}>{'Enter you details'}</Text>
-            </View>
-          </View>
+          <Header title={'Enter your details'}/>
           {
             !this.state.error ? null :
               <View style={styles.error}>
@@ -224,23 +221,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     paddingVertical: 20
-  },
-  header: {
-    borderBottomWidth: 1,
-    borderColor: 'rgba(8,8,8,0.2)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    minHeight: 50
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center'
-  },
-  headerTextContainer: {
-    flex: 1
   },
   button: {
     marginRight: 20,
