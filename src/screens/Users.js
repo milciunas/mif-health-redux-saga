@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types';
 import { getUsers, makeAdmin, regenerateUserWorkout } from '../state/actions/authActions';
 import Modal from 'react-native-modal';
 import { Actions as Navigation } from 'react-native-router-flux';
+import Header from '../components/Header';
 
 class Users extends Component {
   static propTypes = {
@@ -51,11 +52,7 @@ class Users extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>{'Manage users'}</Text>
-          </View>
-        </View>
+        <Header title={'Manage users'} />
         {
           this.props.users.length > 0 ?
             <ScrollView contentContainerStyle={styles.scrollView}>
@@ -133,23 +130,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(8,8,8,0.2)',
     marginLeft: 10,
     marginRight: 10
-  },
-  header: {
-    borderBottomWidth: 1,
-    borderColor: 'rgba(8,8,8,0.4)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    minHeight: 50
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center'
-  },
-  headerTextContainer: {
-    flex: 1
   },
   menuRow: {
     padding: 20,

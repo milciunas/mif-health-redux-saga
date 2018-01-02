@@ -6,30 +6,9 @@ import t from 'tcomb-form-native';
 import { createExercise } from '../state/actions/authActions';
 import AutoScroll from '../components/AutoScroll';
 import { validate } from 'tcomb-validation';
+import Header from '../components/Header';
 
 const Form = t.form.Form;
-
-const Gender = t.enums({
-  male: 'Male',
-  female: 'Female'
-});
-
-const level = t.enums({
-  beginner: 'Beginner',
-  intermediate: 'Intermediate'
-}, 'Level');
-
-const goal = t.enums({
-  loss: 'Weight loss',
-  gain: 'Weight gain'
-}, 'Goal');
-
-const activity = t.enums({
-  no: 'Little to no exercise',
-  light: 'Light exercise (1–3 days per week)',
-  moderate: 'Moderate exercise (3–5 days per week)',
-  heavy: 'Heavy exercise (6–7 days per week)'
-});
 
 const levels = t.enums({
   beginner: 'Beginner',
@@ -210,11 +189,7 @@ class CreateExercise extends Component {
   render() {
     return (
       <View style={styles.screen}>
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>{'Create an exercise'}</Text>
-          </View>
-        </View>
+        <Header title={'Create an exercise'} />
         {
           !this.state.error ? null :
             <View style={styles.error}>
@@ -258,23 +233,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     paddingVertical: 20
-  },
-  header: {
-    borderBottomWidth: 1,
-    borderColor: 'rgba(8,8,8,0.2)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    minHeight: 50
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center'
-  },
-  headerTextContainer: {
-    flex: 1
   },
   button: {
     marginRight: 20,

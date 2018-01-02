@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, PixelRatio } from 'react-native';
-import { Router, Scene, Stack } from 'react-native-router-flux';
+import { BackHandler, ToastAndroid, StyleSheet, PixelRatio } from 'react-native';
+import { Router, Scene, Stack, Actions } from 'react-native-router-flux';
 import { Ionicons } from '@expo/vector-icons';
 
 import WelcomeScreen from '../screens/Welcome';
 import RegisterScreen from '../screens/Register';
 import HomeScreen from '../screens/Home';
 import RegisterDetailsScreen from '../screens/RegisterDetails';
-import RegisterDaysScreen from '../screens/RegisterDays';
 import ExerciseDetails from '../components/ExerciseDetails';
 import Profile from '../screens/Profile';
 import CreateExercise from '../screens/CreateExercise';
@@ -19,7 +18,27 @@ const TabIcon = ({ focused, iconName }) => {
   );
 };
 
+
 export default class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      doubleBackToExitPressedOnce: false
+    };
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    return true;
+  }
+
   render() {
     return (
       <Router>
@@ -35,9 +54,6 @@ export default class Navigation extends Component {
           <Scene
             key='registerDetails'
             component={RegisterDetailsScreen} />
-          <Scene
-            key='registerDays'
-            component={RegisterDaysScreen} />
           <Scene
             key='home'
             tabs
