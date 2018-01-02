@@ -19,16 +19,16 @@ class Header extends Component {
     return (
       <View style={styles.header}>
         <TouchableOpacity
-          style={{ flex: 0.2 }}
+          style={{ flex: 0.2, paddingLeft: 10 }}
           onPress={this.props.onBack ? this.props.onBack : this.renderBack}>
           <Text style={styles.headerBackText}>
             {this.props.onBackText ? this.props.onBackText : 'Back'}
           </Text>
         </TouchableOpacity>
-        <View style={{ flex: 0.8}}>
+        <View style={{ flex: 0.8 }}>
           <Text style={styles.headerText}>{this.props.title}</Text>
         </View>
-        <View style={{ flex: 0.2 }}>
+        <View style={{ flex: 0.2, paddingRight: 10 }}>
           {
             this.props.action ?
               <TouchableOpacity
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '600'
   },
   headerBackText: {

@@ -7,7 +7,6 @@ import WelcomeScreen from '../screens/Welcome';
 import RegisterScreen from '../screens/Register';
 import HomeScreen from '../screens/Home';
 import RegisterDetailsScreen from '../screens/RegisterDetails';
-import RegisterDaysScreen from '../screens/RegisterDays';
 import ExerciseDetails from '../components/ExerciseDetails';
 import Profile from '../screens/Profile';
 import CreateExercise from '../screens/CreateExercise';
@@ -55,9 +54,6 @@ export default class Navigation extends Component {
           <Scene
             key='registerDetails'
             component={RegisterDetailsScreen} />
-          <Scene
-            key='registerDays'
-            component={RegisterDaysScreen} />
           <Scene
             key='home'
             tabs

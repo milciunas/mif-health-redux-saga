@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   headerBackIndicator: {
     fontWeight: '600',
-    fontSize: 18,
+    fontSize: 20,
     color: '#2196F3'
   },
   headerText: {
