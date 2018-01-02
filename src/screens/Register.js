@@ -140,18 +140,18 @@ const styles = StyleSheet.create({
     color: 'red'
   },
   button: {
-    marginTop:10,
-    paddingTop:10,
-    paddingBottom:10,
-    backgroundColor:'#2196F3',
-    borderRadius:4
+    marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: '#2196F3',
+    borderRadius: 4
   },
-  btnText:{
-    color:'#fff',
+  btnText: {
+    color: '#fff',
     backgroundColor: 'rgba(0,0,0,0)',
-    textAlign:'center',
-    paddingLeft : 10,
-    paddingRight : 10,
+    textAlign: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
     fontSize: 20
   }
 });
