@@ -84,7 +84,6 @@ class RegisterDetailsScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log('props in state', props);
 
     if (props.details) {
       this.state = {

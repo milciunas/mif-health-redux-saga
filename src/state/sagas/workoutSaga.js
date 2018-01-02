@@ -345,7 +345,7 @@ export function* regenerateWorkout() {
 
     yield call(createWorkout, { details: userDetails });
   } catch (e) {
-    console.log('error while regenerating workout', e);
+    console.log('Error while regenerating workout', e);
   }
 }
 
@@ -355,7 +355,7 @@ export function* regenerateUserWorkout(action) {
 
     yield call(createWorkoutForUser, { details: userDetails });
   } catch (e) {
-    console.log('error while regenerating workout for user', e);
+    console.log('Error while regenerating workout for user', e);
   }
 }
 
