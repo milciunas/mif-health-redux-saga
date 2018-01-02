@@ -118,7 +118,14 @@ export function* createUserDetails(action) {
     bmi,
     idealWeight,
     calories,
-    type
+    type,
+    height,
+    weight,
+    gender,
+    level,
+    goal,
+    age,
+    activity
   };
 
   try {
@@ -233,7 +240,7 @@ export function* fetchOrCreateWorkout() {
         type: userDetails.type
       };
 
-      yield put({ type: CREATE_USER_DETAILS.SUCCESS, details });
+      yield put({ type: CREATE_USER_DETAILS.SUCCESS, details: userDetails });
       yield put({ type: FETCH_USER_WORKOUT.REQUESTED });
       yield call(Navigation.home);
     } else {

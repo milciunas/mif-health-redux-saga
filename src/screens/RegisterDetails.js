@@ -78,24 +78,41 @@ const options = {
 class RegisterDetailsScreen extends Component {
   static propTypes = {
     createUserDetails: PropTypes.func.isRequired,
+    details: PropTypes.object,
     registerLoading: PropTypes.bool
   }
 
   constructor(props) {
     super(props);
+    console.log('props in state', props);
 
-    this.state = {
-      form: {
-        age: '',
-        weight: '',
-        height: '',
-        gender: 'male',
-        level: 'beginner',
-        goal: 'loss',
-        activity: 'no'
-      },
-      error: null
-    };
+    if (props.details) {
+      this.state = {
+        form: {
+          age: props.details.age,
+          weight: props.details.weight,
+          height: props.details.height,
+          gender: props.details.gender,
+          level: props.details.level,
+          goal: props.details.goal,
+          activity: props.details.activity
+        },
+        error: null
+      };
+    } else {
+      this.state = {
+        form: {
+          age: '',
+          weight: '',
+          height: '',
+          gender: 'male',
+          level: 'beginner',
+          goal: 'loss',
+          activity: 'no'
+        },
+        error: null
+      };
+    }
   }
 
   validation = (type, getValidationErrorMessage, name) => {

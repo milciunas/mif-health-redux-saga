@@ -32,7 +32,8 @@ class Profile extends Component {
   }
 
   editDetails = () => {
-    Navigation.registerDetails();
+    const details = this.props.details;
+    Navigation.registerDetails({ details });
   }
 
   createExercise = () => {
