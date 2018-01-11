@@ -51,8 +51,6 @@ export default class AutoScroll extends Component {
   }
 
   handleContentChange(w, h) {
-    // repeated called on Android
-    // should do diff
     if (h === this.contentHeight) return;
     this.contentHeight = h;
 
@@ -67,7 +65,6 @@ export default class AutoScroll extends Component {
   }
 
   scrollToBottomIfNecessary() {
-    // todo: range detection
     this.scrollToBottom();
   }
   scrollToBottom() {

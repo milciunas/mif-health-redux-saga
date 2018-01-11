@@ -108,7 +108,6 @@ export function createAnonymousUserInDb(uid) {
 export function* createUserDetails(action) {
   const { height, weight, gender, level, goal, age, activity, type } = action.details;
 
-  // KNYGA, Dellova, et al. ABC’s of Nutrition and Diet Therapy. 2006
   const bmi = calculateBmi(height, weight);
   const idealWeight = calculateIdealWeight(height, gender);
   const calories = calculateCalories(height, weight, age, gender, activity);
@@ -161,10 +160,6 @@ function calculateBmi(heightString, weightString) {
 }
 
 function calculateIdealWeight(heightString, gender) {
-  // FORMULA
-  // Men: Ideal Body Weight (kg) = [Height (cm) - 100] - ([Height (cm) - 100] x 10%)
-  // Women: Ideal Body Weight (kg) = [Height (cm) - 100] - ([Height (cm) - 100] x 15%)
-
   const height = Number(heightString);
   let idealWeight;
 
@@ -183,9 +178,6 @@ function percentage(num, per)
 }
 
 function calculateCalories(heightString, weightString, age, gender, activity) {
-  // FORMULA:
-  // MAN 	BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5
-  // WOMAN BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161
   const height = Number(heightString);
   const weight = Number(weightString);
   let bmr;

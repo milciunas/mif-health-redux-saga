@@ -10,7 +10,6 @@ export default () => {
   const store = createStore(
     rootReducer,
     compose(applyMiddleware(sagaMiddleware, logger))
-    // compose(applyMiddleware(sagaMiddleware))
   );
 
   sagaMiddleware.run(rootSaga);
